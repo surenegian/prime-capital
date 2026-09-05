@@ -13,7 +13,14 @@
 .pc-phone-arrow:hover{border-color:var(--w-accent-line);background:var(--w-accent-soft)}
 @media (prefers-reduced-motion:reduce){.pc-phone-shot,.pc-phone-dot{transition:none}}
 @media (max-width:760px){
-  .pc-phone-frame{width:min(190px,50vw);border-radius:32px;padding:3px;box-shadow:none}
+  /* explicit width+height (not aspect-ratio) -- aspect-ratio combined with a
+     min()-based width was letterboxing the screenshot to ~80% height on real
+     mobile WebKit, meaning the box's rendered height wasn't actually landing
+     on the 1320:2868 ratio the aspect-ratio property was supposed to derive.
+     Computing height directly (same 1320:2868 ratio, same min() shape) sidesteps
+     that derivation entirely -- both branches are locked to the same ratio by
+     construction, so there's nothing left for a browser to get wrong. */
+  .pc-phone-frame{width:min(190px,50vw);height:min(413px,108.64vw);aspect-ratio:auto;border-radius:32px;padding:3px;box-shadow:none}
   .pc-phone-notch{top:9px;height:12px;border-radius:7px}
   .pc-phone-screen{border-radius:30px}
   .pc-phone-shot{object-fit:contain}
