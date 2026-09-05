@@ -32,6 +32,10 @@
      for the now-hidden phone -- collapse to a single row so the copy
      column doesn't leave dead space where the phone used to be */
   .alf-hero-grid{grid-template-rows:auto}
+  /* .alf-hero's own min-height (a clamp sized for phone+copy together) was
+     still forcing a tall section even with the phone gone, leaving a big
+     empty gap below the copy. Let it size to its actual content instead. */
+  .alf-hero{min-height:auto}
 }
 </style><style>
 .alf-fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
