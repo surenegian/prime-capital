@@ -42,15 +42,23 @@
   var shots = phone.querySelectorAll('.pc-phone-shot');
   var dots = phone.querySelectorAll('.pc-phone-dot');
   var i = 0;
+  var timer = null;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function show(n) {
     i = (n + shots.length) % shots.length;
     shots.forEach(function(s, idx){ s.classList.toggle('is-active', idx === i); });
     dots.forEach(function(d, idx){ d.classList.toggle('is-active', idx === i); });
   }
-  dots.forEach(function(d){ d.addEventListener('click', function(){ show(parseInt(d.dataset.idx, 10)); }); });
+  function restartTimer(){
+    if (reduceMotion || shots.length < 2) return;
+    if (timer) clearInterval(timer);
+    timer = setInterval(function(){ show(i + 1); }, 4000);
+  }
+  dots.forEach(function(d){ d.addEventListener('click', function(){ show(parseInt(d.dataset.idx, 10)); restartTimer(); }); });
   phone.querySelectorAll('.pc-phone-arrow').forEach(function(btn){
-    btn.addEventListener('click', function(){ show(i + parseInt(btn.dataset.dir, 10)); });
+    btn.addEventListener('click', function(){ show(i + parseInt(btn.dataset.dir, 10)); restartTimer(); });
   });
+  restartTimer();
 })();
 </script><script>
 (function(){
