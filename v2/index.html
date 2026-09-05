@@ -25,11 +25,9 @@
   .pc-phone-screen{border-radius:30px}
   .pc-phone-shot{object-fit:contain}
   .alf-story-device .pc-phone{justify-content:flex-end;padding-bottom:8%}
-  /* the vendor's own mobile .alf-hero-visual min-height (270px) is shorter
-     than the phone+dots/arrows really need (~460-500px) -- the centered
-     phone was overflowing upward past .alf-hero's overflow:hidden edge,
-     clipping its top. Force enough room so nothing has to overflow. */
-  .alf-hero-visual{min-height:500px}
+  /* remove the hero's own phone on mobile entirely -- only the feature
+     section's synced phone stays, per explicit request */
+  .alf-hero-visual{display:none}
 }
 </style><style>
 .alf-fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
