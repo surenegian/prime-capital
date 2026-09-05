@@ -83,7 +83,7 @@
   function restartTimer(){
     if (reduceMotion || shots.length < 2) return;
     if (timer) clearInterval(timer);
-    timer = setInterval(function(){ show(i + 1); }, 5000);
+    timer = setInterval(function(){ show(i + 1); }, 4000);
   }
   dots.forEach(function(d){ d.addEventListener('click', function(){ show(parseInt(d.dataset.idx, 10)); restartTimer(); }); });
   phone.querySelectorAll('.pc-phone-arrow').forEach(function(btn){
@@ -119,7 +119,7 @@
   }
   function start(){
     if (timer || !mq.matches || reduceMotion) return;
-    timer = setInterval(function(){ show(i + 1); }, 5000);
+    timer = setInterval(function(){ show(i + 1); }, 4500);
   }
   function stop(){
     if (timer) { clearInterval(timer); timer = null; }
