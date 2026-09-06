@@ -1,7 +1,7 @@
 import re, pathlib
 
-SRC = pathlib.Path("/tmp")
-OUT = pathlib.Path("/tmp/pc-mirror")
+SRC = pathlib.Path(__file__).parent / "raw-source"
+OUT = pathlib.Path(__file__).parent
 
 CSS_NAMES = ["3cgp9wgn1jz2r.css", "2yivp3fx_0wqo.css", "42i-eaj0l7rw6.css"]
 
