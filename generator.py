@@ -229,7 +229,7 @@ ICON_IMPORT = '<rect x="40" y="152" width="176" height="64" rx="12" opacity="0.2
 
 FEATURE_PANELS = [
     ("See Your Full Picture", "View net worth, monthly income, spending, and top categories as soon as you open the app.", ICON_CHART, "shot-dashboard.webp", "Dashboard"),
-    ("Add Entries Quickly", "Record an expense or income in a few taps, with custom categories and suggested emojis.", ICON_LIGHTNING, "shot-add-expense.webp", "Add a transaction"),
+    ("Add Entries Quickly", "Record an expense or income in a few taps, with custom categories and suggested emojis. Or scan a receipt to fill in the amount, date, and category — read on your iPhone, never stored.", ICON_LIGHTNING, "shot-add-expense.webp", "Add a transaction"),
     ("Multi-Currency, Real Rates", "Add accounts in any of 24 currencies and fetch that day's exchange rate with one tap — never type one in by hand.", ICON_WALLET, "feature-currency.webp", "Currency and live rate"),
     ("Make It Yours", "Switch between eight complete color designs, from OLED black to warm cream, any time in Settings.", ICON_PALETTE, "feature-design.webp", "Appearance and themes"),
     ("Locked Down", "Face ID or a PIN keeps the app closed until you open it — on by default, always under your control.", ICON_LOCK, "feature-lockscreen.webp", "Lock screen"),
