@@ -110,7 +110,7 @@ PHONE_HERO_HTML = _phone_hero_html()
 PHONE_STYLE = """<style>
 .pc-phone{display:flex;flex-direction:column;align-items:center;gap:18px;height:100%;justify-content:center}
 .pc-phone-frame{position:relative;width:min(260px,20vw);aspect-ratio:1320/2868;background:#050505;border-radius:44px;padding:4px;box-shadow:0 0 0 1.5px rgba(255,255,255,.14)}
-.pc-phone-notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:28%;height:16px;background:#050505;border-radius:10px;z-index:2}
+.pc-phone-notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:21%;height:17px;background:#050505;border-radius:9px;z-index:2}
 .pc-phone-screen{position:relative;width:100%;height:100%;border-radius:41px;overflow:hidden;background:#000}
 .pc-phone-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease}
 .pc-phone-shot.is-active{opacity:1}
@@ -130,7 +130,7 @@ PHONE_STYLE = """<style>
      derivation entirely -- both branches are locked to the same ratio by
      construction, so there's nothing left for a browser to get wrong. */
   .pc-phone-frame{box-sizing:content-box;width:min(190px,50vw);height:min(413px,108.64vw);aspect-ratio:auto;border-radius:32px;padding:3px;box-shadow:0 0 0 1.1px rgba(255,255,255,.14)}
-  .pc-phone-notch{top:9px;height:12px;border-radius:7px}
+  .pc-phone-notch{top:8.8px;height:12.4px;border-radius:6.5px}
   .pc-phone-screen{border-radius:30px}
   .pc-phone-shot{object-fit:contain}
   .alf-story-device .pc-phone{justify-content:flex-end;padding-bottom:8%}
@@ -150,7 +150,7 @@ PHONE_STYLE = """<style>
 PHONE_STYLE_V2 = """<style>
 .pc-phone{display:flex;flex-direction:column;align-items:center;gap:18px;height:100%;justify-content:center}
 .pc-phone-frame{position:relative;box-sizing:content-box;width:min(260px,20vw);height:min(565px,43.45vw);background:#050505;border-radius:44px;padding:4px;box-shadow:0 0 0 1.5px rgba(255,255,255,.14)}
-.pc-phone-notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:28%;height:16px;background:#050505;border-radius:10px;z-index:2}
+.pc-phone-notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:21%;height:17px;background:#050505;border-radius:9px;z-index:2}
 .pc-phone-screen{position:relative;width:100%;height:100%;border-radius:41px;overflow:hidden;background:#000}
 .pc-phone-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .45s ease}
 .pc-phone-shot.is-active{opacity:1}
@@ -170,7 +170,7 @@ PHONE_STYLE_V2 = """<style>
      that derivation entirely -- both branches are locked to the same ratio by
      construction, so there's nothing left for a browser to get wrong. */
   .pc-phone-frame{box-sizing:content-box;width:min(190px,50vw);height:min(413px,108.64vw);aspect-ratio:auto;border-radius:32px;padding:3px;box-shadow:0 0 0 1.1px rgba(255,255,255,.14)}
-  .pc-phone-notch{top:9px;height:12px;border-radius:7px}
+  .pc-phone-notch{top:8.8px;height:12.4px;border-radius:6.5px}
   .pc-phone-screen{border-radius:30px}
   .pc-phone-shot{object-fit:contain}
   .alf-story-device .pc-phone{justify-content:flex-end;padding-bottom:8%}
@@ -379,7 +379,7 @@ FEATURE_GRID_STYLE = """<style>
   .alf-fgrid-card.no-anim{transition:none}
   .alf-fgrid-phone{display:flex;justify-content:center;margin-bottom:24px}
   .alf-fgrid-phone .pc-phone-frame{width:min(150px,42vw);height:min(326px,91.6vw);aspect-ratio:auto;box-sizing:content-box;border-radius:25px;padding:2px;box-shadow:0 0 0 1.1px rgba(255,255,255,.14)}
-  .alf-fgrid-phone .pc-phone-notch{top:7px;height:9px;border-radius:5px}
+  .alf-fgrid-phone .pc-phone-notch{top:6.9px;height:9.8px;border-radius:5px}
   .alf-fgrid-phone .pc-phone-screen{border-radius:24px}
 }
 @media (prefers-reduced-motion:reduce){.alf-fgrid-card{transition:none}}
