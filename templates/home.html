@@ -58,12 +58,12 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-w
 .show-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
 .card{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;background:var(--stone);border:1px solid var(--hair);border-radius:36px;overflow:hidden;min-height:560px}
 .tabs{display:flex;flex-direction:column;justify-content:center;padding:24px 16px 24px 40px}
-.tab{position:relative;text-align:left;font:inherit;background:none;border:0;border-top:1px solid var(--hair);padding:18px 0 18px 20px;cursor:pointer;color:var(--muted);transition:color .3s}
+.tab{position:relative;text-align:left;font:inherit;background:none;border:0;border-top:1px solid var(--hair);padding:18px 0 18px 20px;cursor:pointer;color:var(--muted);transition:color .6s cubic-bezier(.4,0,.2,1),background-color .6s cubic-bezier(.4,0,.2,1),border-color .6s cubic-bezier(.4,0,.2,1)}
 .tab:first-child{border-top:0}
 .tab:before,.tab .bar{content:"";position:absolute;left:0;top:20px;bottom:20px;width:2px;border-radius:2px}
 .tab:before{background:var(--hair);transform:scaleY(0);transform-origin:center;transition:transform .7s cubic-bezier(.4,0,.2,1)}
 .tab .bar{background:var(--accent);transform:scaleY(0);transform-origin:top;will-change:transform}
-.tab .th{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--ink);opacity:.62;transition:opacity .6s cubic-bezier(.4,0,.2,1)}
+.tab .th{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--ink);opacity:.62;transition:opacity .6s cubic-bezier(.4,0,.2,1),color .6s cubic-bezier(.4,0,.2,1)}
 .tab .th .s{display:none}
 .tab .tp{display:block;max-height:0;overflow:hidden;opacity:0;font-size:15px;line-height:1.5;color:var(--muted);max-width:380px;transition:max-height .8s cubic-bezier(.4,0,.2,1),opacity .7s cubic-bezier(.4,0,.2,1) .1s,margin .6s cubic-bezier(.4,0,.2,1)}
 .tab[aria-selected="true"] .th{opacity:1}
@@ -75,9 +75,9 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-w
 .view .phone{--w:250px;margin-top:40px;margin-bottom:-90px;cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
 .dots{position:absolute;top:14px;right:14px;z-index:3;display:flex}
 .dots button{width:22px;height:30px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
-.dots button:before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(19,19,19,.25);transition:width .4s var(--ease),background .3s}
+.dots button:before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(19,19,19,.25);transition:width .7s cubic-bezier(.4,0,.2,1),background-color .6s cubic-bezier(.4,0,.2,1)}
 .dots button[aria-current="true"]:before{width:20px;border-radius:4px;background:var(--accent)}
-.view .phone img{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);opacity:0;z-index:1;will-change:opacity;transition:opacity 0s linear 1s}
+.view .phone img{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);opacity:0;z-index:1;transition:opacity 0s linear 1s}
 .view .phone img.on{opacity:1;z-index:2;transition:opacity 1s cubic-bezier(.4,0,.2,1)}
 .also{margin-top:20px;font-size:14px;color:var(--muted)}
 .also b{color:var(--ink);font-weight:600}
@@ -141,8 +141,9 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   .faq{grid-template-columns:1fr}
   .band{padding-top:64px}
 }
-.cap{display:none;transition:opacity .35s ease;padding:20px 24px 4px;font-size:15px;color:var(--muted);background:var(--stone)}
+.cap{display:none;transition:opacity .75s cubic-bezier(.4,0,.2,1),transform .75s cubic-bezier(.22,1,.36,1);padding:20px 24px 4px;font-size:15px;color:var(--muted);background:var(--stone)}
 @media (max-width:900px){.cap{display:block}}
+.cap.swap{opacity:0;transform:translateY(6px);transition-duration:.32s,.32s}
 </style>
 </head>
 <body>
@@ -259,7 +260,9 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   function centerTab(i){
     if(tabs.scrollWidth<=tabs.clientWidth+1)return;
     var b=tb[i],tr=tabs.getBoundingClientRect(),br=b.getBoundingClientRect();
-    tabs.scrollTo({left:tabs.scrollLeft+(br.left-tr.left)-(tabs.clientWidth-br.width)/2,behavior:rm?'auto':'smooth'});
+    var x=tabs.scrollLeft+(br.left-tr.left)-(tabs.clientWidth-br.width)/2;
+    if(!rm&&window.CSS&&CSS.supports('scroll-behavior','smooth'))tabs.scrollTo({left:x,behavior:'smooth'});
+    else tabs.scrollLeft=x;
   }
   function go(i,focus){
     i=(i+F.length)%F.length;cur=i;start();centerTab(i);
@@ -267,8 +270,8 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
     im.forEach(function(p,k){p.classList.toggle('on',k===i)});
     im[i].style.zIndex=++zTop; // newest always on top, so each dissolve starts from the screen you were just on
     db.forEach(function(d,k){d.setAttribute('aria-current',k===i)});
-    cap.style.opacity=0;
-    clearTimeout(go.c);go.c=setTimeout(function(){cap.textContent=F[i][2];cap.style.opacity=1},rm?0:240);
+    cap.classList.add('swap');
+    clearTimeout(go.c);go.c=setTimeout(function(){cap.textContent=F[i][2];cap.classList.remove('swap')},rm?0:320);
     if(focus)tb[i].focus({preventScroll:true});
   }
   dots.addEventListener('click',function(e){var b=e.target.closest('button');if(b)go(db.indexOf(b))});
@@ -305,7 +308,12 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   new IntersectionObserver(function(es){es.forEach(function(e){hold.vis=e.isIntersecting;applyHold()})},{threshold:.35}).observe(card);
   start();
   // decode every screenshot up front so the first switch to each one never hitches
-  im.forEach(function(p){if(p.decode)p.decode().catch(function(){})});
+  (function warm(k){
+    if(k>=im.length||!im[k].decode)return;
+    im[k].decode().catch(function(){}).then(function(){
+      (window.requestIdleCallback||function(f){setTimeout(f,120)})(function(){warm(k+1)});
+    });
+  })(0);
   tabs.addEventListener('click',function(e){
     var b=e.target.closest?e.target.closest('.tab'):null;
     if(b)go(tb.indexOf(b));
