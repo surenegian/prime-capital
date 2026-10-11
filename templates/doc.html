@@ -16,7 +16,7 @@
 *{box-sizing:border-box;margin:0}
 html{background:var(--bg)}
 body{font:16px/1.55 var(--sans);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
-a{color:inherit}
+a{color:inherit;touch-action:manipulation}
 .wrap{max-width:1160px;margin:0 auto;padding:0 24px;width:100%}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
 
@@ -25,12 +25,13 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-.01em;text-decoration:none}
 .brand img{width:28px;height:28px;border-radius:8px}
 .btn{display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fff;font-weight:600;font-size:14px;text-decoration:none;transition:transform .35s var(--ease),background .3s}
-.btn:hover{background:#000}.btn:active{transform:scale(.97)}
+.btn:active{transform:scale(.97)}
+@media (hover:hover){.btn:hover{background:#000}}
 
 main{flex:1}
 .doc{max-width:720px;margin:0 auto;padding:40px 24px 96px}
 .back{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .25s}
-.back:hover{color:var(--ink)}
+@media (hover:hover){.back:hover{color:var(--ink)}}
 .back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 h1{margin-top:16px;font-size:clamp(36px,5.4vw,60px);line-height:1.02;letter-spacing:-.045em;font-weight:600;text-wrap:balance}
 .updated{margin-top:14px;font-size:14px;color:var(--muted)}
@@ -43,13 +44,13 @@ h1{margin-top:16px;font-size:clamp(36px,5.4vw,60px);line-height:1.02;letter-spac
 .prose li::marker{color:var(--muted)}
 .prose strong{font-weight:600;color:var(--ink)}
 .prose a{text-decoration:underline;text-decoration-color:rgba(19,19,19,.3);text-underline-offset:3px;transition:text-decoration-color .25s}
-.prose a:hover{text-decoration-color:var(--ink)}
+@media (hover:hover){.prose a:hover{text-decoration-color:var(--ink)}}
 
 footer{border-top:1px solid var(--hair);padding:20px 0 28px;font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:center;padding:0 10px}
 footer a[aria-current="page"]{color:var(--ink);font-weight:600}
-footer a:hover{color:var(--ink)}
+@media (hover:hover){footer a:hover{color:var(--ink)}}
 
 .rv{opacity:0;transform:translateY(16px);animation:rise .8s var(--ease) forwards}
 @keyframes rise{to{opacity:1;transform:none}}

@@ -49,7 +49,8 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-.01em;text-decoration:none}
 .brand img{width:28px;height:28px;border-radius:8px}
 .btn{display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fff;font-weight:600;font-size:14px;text-decoration:none;transition:transform .35s var(--ease),background .3s}
-.btn:hover{background:#000}.btn:active{transform:scale(.97)}
+.btn:active{transform:scale(.97)}
+@media (hover:hover){.btn:hover{background:#000}}
 
 /* type */
 h1{font-size:clamp(44px,6.6vw,84px);line-height:1;letter-spacing:-.045em;font-weight:600;max-width:680px;text-wrap:balance}
@@ -91,7 +92,7 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-w
 .tab[aria-selected="true"]:before{transform:scaleY(1)}
 .card.noauto .tab[aria-selected="true"] .bar{transform:scaleY(1)}
 .tab[aria-selected="true"] .tp{max-height:120px;opacity:1;margin-top:6px}
-.tab:hover .th{opacity:1}
+@media (hover:hover){.tab:hover .th{opacity:1}}
 .view{position:relative;background:var(--stone2);display:flex;justify-content:center;align-items:flex-end;overflow:hidden;border-left:1px solid var(--hair)}
 .view .phone{--w:250px;margin-top:40px;margin-bottom:-90px;cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
 .dots{position:absolute;top:14px;right:14px;z-index:3;display:flex}
@@ -121,6 +122,9 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-w
 details{border-bottom:1px solid var(--hair)}
 summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:60px;font-size:17px;font-weight:600;letter-spacing:-.01em}
 summary::-webkit-details-marker{display:none}
+summary{transition:background-color .25s;-webkit-tap-highlight-color:transparent}
+summary:active{background:rgba(19,19,19,.05)}
+a,button,summary{touch-action:manipulation}
 summary:after{content:"";flex:none;width:8px;height:8px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg) translateY(-2px)}
 details[open]:not(.closing) summary:after{transform:rotate(225deg) translateY(-2px)}
 summary:after{transition:transform .5s cubic-bezier(.4,0,.2,1)}
@@ -360,11 +364,14 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   });
 
   /* FAQ: smooth, interruptible unfold */
-  var EASE='cubic-bezier(.4,0,.2,1)';
+  var OPEN='cubic-bezier(.16,1,.3,1)',SHUT='cubic-bezier(.3,0,.2,1)';
   document.querySelectorAll('.faq details').forEach(function(d){
     var sm=d.querySelector('summary'),ans=d.querySelector('p');
     sm.addEventListener('click',function(e){
       e.preventDefault();
+      var now=performance.now();
+      if(now-(d._t||0)<280)return;   // double-tap or ghost click: don't undo what was just done
+      d._t=now;
       if(rm){d.open=!d.open;return}
       var from=d.offsetHeight;                       // live height, even mid animation
       if(d._a){d._a.cancel();d._a=null}
@@ -373,9 +380,9 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
       d.style.overflow='hidden';
       if(closing){d.classList.add('closing');to=shut}
       else{d.classList.remove('closing');d.open=true;to=d.offsetHeight}
-      var a=d._a=d.animate([{height:from+'px'},{height:to+'px'}],{duration:closing?460:560,easing:EASE,fill:'forwards'});
+      var a=d._a=d.animate([{height:from+'px'},{height:to+'px'}],{duration:closing?460:640,easing:closing?SHUT:OPEN,fill:'forwards'});
       ans.animate(closing?[{opacity:1},{opacity:0}]:[{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],
-                  {duration:closing?220:460,delay:closing?0:90,easing:EASE,fill:'both'});
+                  {duration:closing?220:420,easing:closing?SHUT:OPEN,fill:'both'});
       a.onfinish=function(){
         if(closing){d.open=false;d.classList.remove('closing')}
         d.style.overflow='';a.cancel();d._a=null;
