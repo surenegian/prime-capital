@@ -1,4 +1,10 @@
-import re, json, pathlib
+import re, json, os, shutil, filecmp, pathlib
+
+# Which app appearance the screenshots show. Both sets live in appearances/<name>/ under the same
+# file names; change this one word and run `python3 generator.py` to switch the whole site.
+# (PC_APPEARANCE=burgundy python3 generator.py builds the other one without editing this file.)
+APPEARANCE = os.environ.get("PC_APPEARANCE", "espresso")   # "espresso" or "burgundy"
+ACCENTS = {"espresso": "#1f4d3a", "burgundy": "#6b1d2e"}   # small page accent that sits best with each
 
 SRC = pathlib.Path(__file__).parent / "raw-source"
 OUT = pathlib.Path(__file__).parent / "site"
@@ -101,6 +107,17 @@ def _build_variants():
         im = Image.open(src)
         im.resize((SHOT_W, round(im.height * SHOT_W / im.width)), Image.LANCZOS).save(
             dst, "WEBP", lossless=True, quality=100, method=6)
+
+def apply_appearance():
+    src = pathlib.Path(__file__).parent / "appearances" / APPEARANCE
+    assert src.is_dir(), f"no screenshots for appearance {APPEARANCE!r} in {src}"
+    for f in sorted(src.glob("*.webp")):
+        dst = IMG_DIR / f.name
+        if dst.exists() and filecmp.cmp(f, dst, shallow=False):
+            continue
+        shutil.copyfile(f, dst)                      # new mtime, so the 780px copy is rebuilt below
+        (IMG_DIR / _variant(f.name)).unlink(missing_ok=True)
+    print("appearance:", APPEARANCE)
 
 def transform(html: str, prefix: str, page: str = "") -> str:
     html = fix_seo_meta(html, page)
@@ -277,17 +294,18 @@ def home_seo() -> str:
         f'<script type="application/ld+json">{ld}</script>',
     ])
 
+apply_appearance()
 _build_variants()
 
 home = (pathlib.Path(__file__).parent / "templates" / "home.html").read_text()
 assert home.count("<!--SEO-->") == 1
-(OUT / "index.html").write_text(home.replace("<!--SEO-->", home_seo(), 1))
+(OUT / "index.html").write_text(home.replace("<!--SEO-->", home_seo(), 1).replace("__ACCENT__", ACCENTS[APPEARANCE]))
 print(OUT / "index.html", len(home), "bytes (template)")
 
 doc_tpl = (pathlib.Path(__file__).parent / "templates" / "doc.html").read_text()
 for src_name, (dest, page) in DOC_PAGES.items():
     title, updated, body = extract_doc((SRC / src_name).read_text())
-    html = doc_tpl.replace("<!--SEO-->", doc_seo(page), 1).replace("{{ROOT}}", "../")
+    html = doc_tpl.replace("<!--SEO-->", doc_seo(page), 1).replace("{{ROOT}}", "../").replace("__ACCENT__", ACCENTS[APPEARANCE])
     html = html.replace("{{TITLE}}", title).replace("{{UPDATED}}", updated).replace("{{BODY}}", body)
     for slug in ("privacy", "terms", "support"):
         html = html.replace("{{NAV_" + slug + "}}", ' aria-current="page"' if slug == page else "")
