@@ -132,9 +132,10 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   .tab .tp{display:none}
   .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink)}
   .tab[aria-selected="true"] .th{color:#fff}
-  .view{border-left:0;border-top:1px solid var(--hair);height:430px}
-  .view .phone{--w:220px;margin-top:28px}
-  .cap{display:block}
+  .view{border-left:0;border-top:1px solid var(--hair);height:470px;flex-direction:column;align-items:center;justify-content:flex-start}
+  .dots{position:static;margin-top:8px}
+  .view .phone{--w:220px;margin-top:4px;margin-bottom:0}
+  .cap{display:block;min-height:calc(15px*1.55*4 + 24px)}
   .facts{grid-template-columns:1fr}
   .fact,.fact+.fact{padding:20px 0;border-left:0;border-bottom:1px solid var(--hair)}
   .faq{grid-template-columns:1fr}
@@ -251,18 +252,24 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   var db=[].slice.call(dots.querySelectorAll('button'));
   var tb=[].slice.call(tabs.querySelectorAll('.tab')),im=[].slice.call(view.querySelectorAll('img'));
   im.forEach(function(p){p.draggable=false});
-  var zTop=2,DUR=4500,anim=null,hold={hover:false,focus:false,vis:false,hid:document.hidden};
+  var zTop=2,DUR=4500,anim=null,hold={hover:false,focus:false,touch:false,vis:false,hid:document.hidden};
   var auto=!rm,card=document.querySelector('.card');
   if(!auto)card.classList.add('noauto');
+  // phone width: the chips scroll sideways, so keep the selected one in view (never scrolls the page itself)
+  function centerTab(i){
+    if(tabs.scrollWidth<=tabs.clientWidth+1)return;
+    var b=tb[i],tr=tabs.getBoundingClientRect(),br=b.getBoundingClientRect();
+    tabs.scrollTo({left:tabs.scrollLeft+(br.left-tr.left)-(tabs.clientWidth-br.width)/2,behavior:rm?'auto':'smooth'});
+  }
   function go(i,focus){
-    i=(i+F.length)%F.length;cur=i;start();
+    i=(i+F.length)%F.length;cur=i;start();centerTab(i);
     tb.forEach(function(b,k){b.setAttribute('aria-selected',k===i);b.tabIndex=k===i?0:-1});
     im.forEach(function(p,k){p.classList.toggle('on',k===i)});
     im[i].style.zIndex=++zTop; // newest always on top, so each dissolve starts from the screen you were just on
     db.forEach(function(d,k){d.setAttribute('aria-current',k===i)});
     cap.style.opacity=0;
     clearTimeout(go.c);go.c=setTimeout(function(){cap.textContent=F[i][2];cap.style.opacity=1},rm?0:240);
-    if(focus){tb[i].focus();tb[i].scrollIntoView({block:'nearest',inline:'nearest'})}
+    if(focus)tb[i].focus({preventScroll:true});
   }
   dots.addEventListener('click',function(e){var b=e.target.closest('button');if(b)go(db.indexOf(b))});
   var px=null;
@@ -273,7 +280,7 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   });
   view.addEventListener('pointercancel',function(){px=null});
   view.addEventListener('dragstart',function(e){e.preventDefault()});
-  function held(){return hold.hover||hold.focus||hold.hid||!hold.vis}
+  function held(){return hold.hover||hold.focus||hold.touch||hold.hid||!hold.vis}
   // the progress marker is a compositor animation; its end advances the slide, pausing it pauses autoplay
   function start(){
     if(anim){anim.cancel();anim=null}
@@ -284,6 +291,11 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
     if(held())anim.pause();
   }
   function applyHold(){if(anim){held()?anim.pause():anim.play()}}
+  card.addEventListener('pointerdown',function(e){
+    if(e.pointerType!=='touch')return;
+    hold.touch=true;applyHold();clearTimeout(hold.tt);
+    hold.tt=setTimeout(function(){hold.touch=false;applyHold()},8000);
+  });
   card.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hold.hover=true;applyHold()}});
   card.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hold.hover=false;applyHold()}});
   // only keyboard focus pauses; a mouse click leaves focus on the button, which must not freeze autoplay
