@@ -1,4 +1,4 @@
-import re, pathlib
+import re, json, pathlib
 
 SRC = pathlib.Path(__file__).parent / "raw-source"
 OUT = pathlib.Path(__file__).parent / "site"
@@ -83,9 +83,32 @@ PHONE_SHOTS = [
     ("shot-statistics.webp", "Statistics: spending by category and balance growth"),
 ]
 
+# Screenshots are 1320px wide but shown at ~150-260px. Lossless 780px copies
+# (3x the widest display size) cut each file roughly in half with no quality
+# loss; the originals stay as the srcset fallback. Built here, not by hand.
+SHOT_W = 780
+IMG_DIR = OUT / "assets" / "img"
+
+def _variant(shot: str) -> str:
+    return shot.replace(".webp", f"-{SHOT_W}.webp")
+
+def _build_variants():
+    from PIL import Image
+    for shot, _ in PHONE_SHOTS:
+        src, dst = IMG_DIR / shot, IMG_DIR / _variant(shot)
+        if dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime:
+            continue
+        im = Image.open(src)
+        im.resize((SHOT_W, round(im.height * SHOT_W / im.width)), Image.LANCZOS).save(
+            dst, "WEBP", lossless=True, quality=100, method=6)
+
+def _srcset(prefix: str, shot: str) -> str:
+    return (f'src="{prefix}assets/img/{shot}" srcset="{prefix}assets/img/{_variant(shot)} {SHOT_W}w, '
+            f'{prefix}assets/img/{shot} 1320w" sizes="(max-width:760px) 150px, 260px"')
+
 def _phone_hero_html():
     imgs = "".join(
-        f'<img src="{{prefix}}assets/img/{shot}" alt="{label}"'
+        f'<img {_srcset("{prefix}", shot)} alt="{label}"'
         f' class="pc-phone-shot{" is-active" if i == 0 else ""}" loading="{"eager" if i == 0 else "lazy"}"/>'
         for i, (shot, label) in enumerate(PHONE_SHOTS)
     )
@@ -202,11 +225,18 @@ PHONE_SCRIPT = """<script>
     shots.forEach(function(s, idx){ s.classList.toggle('is-active', idx === i); });
     dots.forEach(function(d, idx){ d.classList.toggle('is-active', idx === i); });
   }
+  var held = false;
   function restartTimer(){
-    if (reduceMotion || shots.length < 2) return;
     if (timer) clearInterval(timer);
+    timer = null;
+    if (reduceMotion || held || shots.length < 2) return;
     timer = setInterval(function(){ show(i + 1); }, 4000);
   }
+  function hold(v){ return function(){ held = v; restartTimer(); }; }
+  phone.addEventListener('mouseenter', hold(true));
+  phone.addEventListener('mouseleave', hold(false));
+  phone.addEventListener('focusin', hold(true));
+  phone.addEventListener('focusout', hold(false));
   dots.forEach(function(d){ d.addEventListener('click', function(){ show(parseInt(d.dataset.idx, 10)); restartTimer(); }); });
   phone.querySelectorAll('.pc-phone-arrow').forEach(function(btn){
     btn.addEventListener('click', function(){ show(i + parseInt(btn.dataset.dir, 10)); restartTimer(); });
@@ -259,7 +289,7 @@ def _feature_panels_html() -> str:
 
 def _feature_device_html(prefix: str) -> str:
     imgs = "".join(
-        f'<img src="{prefix}assets/img/{shot}" alt="{alt}"'
+        f'<img {_srcset(prefix, shot)} alt="{alt}"'
         f' class="pc-phone-shot{" is-active" if i == 0 else ""}" loading="lazy"/>'
         for i, (_t, _b, _i, shot, alt) in enumerate(FEATURE_PANELS)
     )
@@ -343,7 +373,7 @@ def _feature_grid_html(prefix: str) -> str:
         for i, (title, body, icon, _shot, _alt) in enumerate(FEATURE_GRID_ITEMS)
     )
     shots = "".join(
-        f'<img src="{prefix}assets/img/{shot}" alt="{alt}" class="pc-phone-shot{" is-active" if i == 0 else ""}" loading="lazy"/>'
+        f'<img {_srcset(prefix, shot)} alt="{alt}" class="pc-phone-shot{" is-active" if i == 0 else ""}" loading="lazy"/>'
         for i, (_t, _b, _i, shot, alt) in enumerate(FEATURE_GRID_ITEMS)
     )
     phone = (
@@ -420,6 +450,16 @@ FEATURE_GRID_SCRIPT = """<script>
   }
   function sync(){ if (mq.matches) { start(); } else { stop(); } }
   if (mq.addEventListener) mq.addEventListener('change', sync); else mq.addListener(sync);
+  // cards are only shown one at a time on mobile and had no controls: tap the
+  // card or the phone to go to the next one (and restart the auto-advance)
+  [document.querySelector('.alf-fgrid'), document.querySelector('.alf-fgrid-phone')].forEach(function(el){
+    if (!el) return;
+    el.addEventListener('click', function(){
+      if (!mq.matches) return;
+      show(i + 1);
+      stop(); start();
+    });
+  });
   sync();
 })();
 </script>"""
@@ -578,6 +618,33 @@ def trust_first_rework(html: str, prefix: str, use_grid: bool = False) -> str:
     )
     return html
 
+APP_STORE_ID = "6792149434"
+
+def add_head_extras(html: str, page: str, is_index: bool) -> str:
+    extra = '<meta name="theme-color" content="#fbfbfa"/>'
+    if is_index:
+        # iOS Safari shows a native "Open in App Store" banner for this
+        extra += f'<meta name="apple-itunes-app" content="app-id={APP_STORE_ID}"/>'
+        extra += '<script type="application/ld+json">' + json.dumps({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Prime Capital",
+            "operatingSystem": "iOS",
+            "applicationCategory": "FinanceApplication",
+            "url": SITE_URL + "/",
+            "downloadUrl": f"https://apps.apple.com/app/id{APP_STORE_ID}",
+            "description": PAGE_SEO[""][1],
+            "inLanguage": ["en", "de", "es", "fr", "it", "nl", "pt", "ru", "hy"],
+        }, ensure_ascii=False) + '</script>'
+    return html.replace("</head>", extra + "</head>", 1)
+
+def drop_dead_preloads(html: str, page_dir: pathlib.Path) -> str:
+    # the vendor template preloads its own hero image, which isn't shipped
+    def keep(m):
+        href = m.group(1)
+        return m.group(0) if href.startswith(("http", "/", "data:")) or (page_dir / href).exists() else ""
+    return re.sub(r'<link rel="preload"[^>]*?href="([^"]+)"[^>]*/?>', keep, html)
+
 pages = {
     "pc-index.html": (OUT / "index.html", "", ""),
     "pc-privacy.html": (OUT / "privacy" / "index.html", "../", "privacy"),
@@ -631,7 +698,10 @@ BRAND_VARS = {
 # that inner wrapper div -- on mobile, any scroll/bounce past .alf-site's own
 # box reveals raw body underneath, so html/body is hardcoded to match --w-bg.
 BRAND_STYLE_OVERRIDE = (
-    '<style>.alf-btn{border-radius:14px}html,body{background:#fbfbfa}'
+    '<style>.alf-btn{border-radius:14px;min-height:44px}html,body{background:#fbfbfa}'
+    '.alf-footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}'
+    '.pc-phone-dot{position:relative}.pc-phone-dot:after{content:"";position:absolute;inset:-18px -3px}'
+    '@media (max-width:760px){.alf-fgrid-card{cursor:pointer}}'
     '.alf-cta-panel{background:var(--w-bg)}.alf-cta-panel:before{display:none}'
     '@media (max-width:760px){.alf-hero-glow{display:none}.alf-hero-copy .alf-badges{margin-bottom:28px}}</style>'
 )
@@ -645,6 +715,7 @@ def apply_brand_identity(html: str) -> str:
 # v2's phone-sizing fixes (explicit width+height, no aspect-ratio,
 # object-fit:contain) and the 9-item feature grid are now confirmed good --
 # promoted here to be the real site itself, not a separate experiment.
+_build_variants()
 for src_name, (dest, prefix, page) in pages.items():
     html = (SRC / src_name).read_text()
     is_index = src_name == "pc-index.html"
@@ -652,6 +723,15 @@ for src_name, (dest, prefix, page) in pages.items():
     if is_index:
         html = trust_first_rework(html, prefix, use_grid=True)
     html = apply_brand_identity(html)
+    html = add_head_extras(html, page, is_index)
+    html = drop_dead_preloads(html, dest.parent)
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(html)
     print(dest, len(html), "bytes")
+
+(OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n")
+(OUT / "sitemap.xml").write_text(
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    + "".join(f"  <url><loc>{SITE_URL}/{slug + '/' if slug else ''}</loc></url>\n" for slug in PAGE_SEO)
+    + "</urlset>\n"
+)
