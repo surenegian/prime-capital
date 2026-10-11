@@ -175,66 +175,60 @@ def transform(html: str, prefix: str, page: str = "") -> str:
 
 # The home page is our own template (templates/home.html). The other three pages
 # are still the AppLaunchFlow templates, transformed and re-skinned to match it.
+# privacy/terms/support: the legal copy still comes from the AppLaunchFlow files in
+# raw-source/ (it is the source of truth for the wording), but it is poured into our
+# own templates/doc.html so these pages share the home page's header, type and footer.
 DOC_PAGES = {
-    "pc-privacy.html": (OUT / "privacy" / "index.html", "../", "privacy"),
-    "pc-support.html": (OUT / "support" / "index.html", "../", "support"),
-    "pc-terms.html": (OUT / "terms" / "index.html", "../", "terms"),
+    "pc-privacy.html": (OUT / "privacy" / "index.html", "privacy"),
+    "pc-support.html": (OUT / "support" / "index.html", "support"),
+    "pc-terms.html": (OUT / "terms" / "index.html", "terms"),
 }
 
 APP_STORE_ID = "6792149434"
 PAPER = "#f7f5f0"   # warm stone; the same value the home template uses
 
-# Re-skin of the vendor pages so privacy/terms/support read as the same product
-# as the home page: same paper color, same SF display type, same ink. Every
-# --w-* token is overridden (not just accent) because the vendor CSS bakes its
-# dark values into the raw template.
-BRAND_VARS = {
-    '--w-font-display:&quot;Inter Variable&quot;, &quot;Inter&quot;, ui-sans-serif, system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif':
-        '--w-font-display:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
-    '--w-font-body:&quot;Inter Variable&quot;, &quot;Inter&quot;, ui-sans-serif, system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif':
-        '--w-font-body:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif',
-    '--w-display-tracking:-0.03em': '--w-display-tracking:-0.035em',
-    '--w-display-weight:750': '--w-display-weight:600',
-    '--w-radius:20px': '--w-radius:14px',
-    '--w-bg:#0a0a0a': f'--w-bg:{PAPER}',
-    '--w-fg:#ffffff': '--w-fg:#131313',
-    '--w-muted:#b7b7b7': '--w-muted:#67655f',
-    '--w-card:#FF6B72': '--w-card:#ffffff',
-    '--w-border:rgba(255, 255, 255, 0.14)': '--w-border:rgba(19, 19, 19, 0.11)',
-    '--w-band:#1b1b1b': '--w-band:#ece9e1',
-    '--w-accent:#ff6b72': '--w-accent:#131313',
-    '--w-primary:#0a0a0a': '--w-primary:#ece9e1',
-    '--w-primary-fg:#ffffff': '--w-primary-fg:#131313',
-    '--w-secondary:#1b1b1b': '--w-secondary:#e3dfd5',
-    '--w-secondary-fg:#ffffff': '--w-secondary-fg:#131313',
-    '--w-accent-fg:#ffffff': '--w-accent-fg:#ffffff',
-    '--w-accent-soft:rgba(255, 107, 114, 0.22)': '--w-accent-soft:rgba(19, 19, 19, 0.06)',
-    '--w-accent-glow:rgba(255, 107, 114, 0.45)': '--w-accent-glow:rgba(19, 19, 19, 0.12)',
-    '--w-accent-line:rgba(255, 107, 114, 0.55)': '--w-accent-line:rgba(19, 19, 19, 0.35)',
-    'color-scheme:dark': 'color-scheme:light',
-}
-
-# .alf-btn's pill radius is hardcoded in the vendor CSS (not driven by --w-radius),
-# and body{background:var(--background)} is Next.js boilerplate unrelated to the
-# themed wrapper -- on mobile a scroll bounce past the wrapper shows raw body, so
-# html/body is pinned to the same paper color.
-BRAND_STYLE_OVERRIDE = (
-    f'<style>.alf-btn{{border-radius:999px;min-height:44px}}html,body{{background:{PAPER}}}'
-    '.alf-footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}'
-    '.alf-cta-panel{background:var(--w-bg)}.alf-cta-panel:before{display:none}</style>'
-)
-
-def apply_brand_identity(html: str) -> str:
-    for old, new in BRAND_VARS.items():
-        html = html.replace(old, new)
-    return html.replace("</head>", BRAND_STYLE_OVERRIDE + "</head>")
-
-def drop_dead_preloads(html: str, page_dir: pathlib.Path) -> str:
-    # the vendor template preloads its own hero image, which isn't shipped
-    def keep(m):
+def extract_doc(raw: str):
+    """Pull (title, updated, body_html) out of a vendor doc page."""
+    title = re.search(r'<h1[^>]*>(.*?)</h1>', raw, re.S).group(1).strip()
+    meta = re.sub(r"<!--.*?-->", "", re.search(r'<p class="alf-doc-meta">(.*?)</p>', raw, re.S).group(1))
+    updated = re.sub(r"\s+", " ", meta.split("Last updated")[1]).strip()
+    body = re.search(r'<div class="alf-prose">(.*?)</div>', raw, re.S).group(1)
+    body = re.sub(r"<!--.*?-->", "", body)
+    # the vendor body repeats the page title as its first heading
+    body = re.sub(r"^\s*<h2>" + re.escape(title) + r"</h2>", "", body)
+    # internal and mailto links should not open new tabs; external ones keep it
+    def link(m):
         href = m.group(1)
-        return m.group(0) if href.startswith(("http", "/", "data:")) or (page_dir / href).exists() else ""
-    return re.sub(r'<link rel="preload"[^>]*?href="([^"]+)"[^>]*/?>', keep, html)
+        if href.startswith("http"):
+            return f'<a href="{href}" target="_blank" rel="noopener noreferrer">'
+        if href.startswith("/"):
+            href = ".." + href + ("/" if not href.endswith("/") else "")
+        return f'<a href="{href}">'
+    body = re.sub(r'<a [^>]*href="([^"]+)"[^>]*>', link, body)
+    return title, updated, body
+
+def doc_seo(page: str) -> str:
+    title, desc = PAGE_SEO[page]
+    image = f"{SITE_URL}/{OG_IMAGE}"
+    url = f"{SITE_URL}/{page}/"
+    return "\n".join([
+        f"<title>{title}</title>",
+        f'<meta name="description" content="{desc}">',
+        f'<link rel="canonical" href="{url}">',
+        f'<meta name="theme-color" content="{PAPER}">',
+        f'<link rel="icon" href="../{LOGO_IMG}">',
+        f'<link rel="apple-touch-icon" href="../{LOGO_IMG}">',
+        '<meta property="og:type" content="website">',
+        '<meta property="og:site_name" content="Prime Capital">',
+        f'<meta property="og:title" content="{title}">',
+        f'<meta property="og:description" content="{desc}">',
+        f'<meta property="og:url" content="{url}">',
+        f'<meta property="og:image" content="{image}">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        f'<meta name="twitter:title" content="{title}">',
+        f'<meta name="twitter:description" content="{desc}">',
+        f'<meta name="twitter:image" content="{image}">',
+    ])
 
 def home_seo() -> str:
     """Everything that goes in the home page <head> besides the template's own CSS."""
@@ -283,12 +277,13 @@ assert home.count("<!--SEO-->") == 1
 (OUT / "index.html").write_text(home.replace("<!--SEO-->", home_seo(), 1))
 print(OUT / "index.html", len(home), "bytes (template)")
 
-for src_name, (dest, prefix, page) in DOC_PAGES.items():
-    html = (SRC / src_name).read_text()
-    html = transform(html, prefix, page)
-    html = apply_brand_identity(html)
-    html = html.replace("</head>", f'<meta name="theme-color" content="{PAPER}"/></head>', 1)
-    html = drop_dead_preloads(html, dest.parent)
+doc_tpl = (pathlib.Path(__file__).parent / "templates" / "doc.html").read_text()
+for src_name, (dest, page) in DOC_PAGES.items():
+    title, updated, body = extract_doc((SRC / src_name).read_text())
+    html = doc_tpl.replace("<!--SEO-->", doc_seo(page), 1).replace("{{ROOT}}", "../")
+    html = html.replace("{{TITLE}}", title).replace("{{UPDATED}}", updated).replace("{{BODY}}", body)
+    for slug in ("privacy", "terms", "support"):
+        html = html.replace("{{NAV_" + slug + "}}", ' aria-current="page"' if slug == page else "")
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(html)
     print(dest, len(html), "bytes")
