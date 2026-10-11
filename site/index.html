@@ -148,7 +148,8 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   .tabs::-webkit-scrollbar{display:none}
   .tab{flex:none;border:1px solid var(--hair);border-radius:999px;padding:0 16px;min-height:44px;display:flex;align-items:center;background:var(--bg)}
   .tab:first-child{border-top:1px solid var(--hair)}
-  .tab:before,.tab .bar{display:none}
+  .tab:before{display:none}
+  .tab .bar{display:block;left:18px;right:18px;top:auto;bottom:7px;width:auto;height:2px;background:rgba(255,255,255,.6);transform:scaleX(0);transform-origin:left;will-change:auto}
   .tab .th{font-size:15px}.tab .th .l{display:none}.tab .th .s{display:inline}
   .tab .tp{display:none}
   .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink)}
@@ -305,21 +306,35 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   view.addEventListener('pointercancel',function(){px=null});
   view.addEventListener('dragstart',function(e){e.preventDefault()});
   function held(){return hold.hover||hold.focus||hold.touch||hold.hid||!hold.vis}
-  // the progress marker is a compositor animation; its end advances the slide, pausing it pauses autoplay
+  // autoplay: a plain timer decides when to advance (it keeps working however a browser treats animations);
+  // the progress line is only the visual, kept in step by pausing and resuming together
+  var timer=0,t0=0,left=DUR;
+  function arm(){clearTimeout(timer);t0=performance.now();timer=setTimeout(function(){timer=0;go(cur+1)},left)}
   function start(){
     if(anim){anim.cancel();anim=null}
+    clearTimeout(timer);timer=0;left=DUR;
     if(!auto)return;
-    var bar=tabs.querySelectorAll('.bar')[cur];
-    anim=bar.animate([{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{duration:DUR,easing:'linear',fill:'forwards'});
-    anim.onfinish=function(){go(cur+1)};
-    if(held())anim.pause();
+    var ax=matchMedia('(max-width:900px)').matches?'scaleX':'scaleY';
+    anim=tabs.querySelectorAll('.bar')[cur].animate([{transform:ax+'(0)'},{transform:ax+'(1)'}],{duration:DUR,easing:'linear',fill:'forwards'});
+    if(held())anim.pause();else arm();
   }
-  function applyHold(){if(anim){held()?anim.pause():anim.play()}}
+  function applyHold(){
+    if(!auto)return;
+    if(held()){
+      if(timer){clearTimeout(timer);timer=0;left=Math.max(0,left-(performance.now()-t0))}
+      if(anim)anim.pause();
+    }else if(!timer){
+      if(anim)anim.play();
+      arm();
+    }
+  }
+  function touchRelease(ms){clearTimeout(hold.tt);hold.tt=setTimeout(function(){hold.touch=false;applyHold()},ms)}
   card.addEventListener('pointerdown',function(e){
     if(e.pointerType!=='touch')return;
-    hold.touch=true;applyHold();clearTimeout(hold.tt);
-    hold.tt=setTimeout(function(){hold.touch=false;applyHold()},8000);
+    hold.touch=true;clearTimeout(hold.tt);applyHold();
   });
+  card.addEventListener('pointerup',function(e){if(e.pointerType==='touch')touchRelease(6000)});
+  card.addEventListener('pointercancel',function(e){if(e.pointerType==='touch')touchRelease(1500)}); // the browser took over to scroll
   card.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hold.hover=true;applyHold()}});
   card.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hold.hover=false;applyHold()}});
   // only keyboard focus pauses; a mouse click leaves focus on the button, which must not freeze autoplay
