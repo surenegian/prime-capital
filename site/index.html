@@ -1,148 +1,364 @@
-<!DOCTYPE html><html data-dpl-id="dpl_AqJ9EE7WdNhXR4HjAKg9FY8EVb3V" lang="en"><head><script>if('scrollRestoration' in history){history.scrollRestoration='manual';}window.scrollTo(0,0);</script><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" as="image" href="assets/img/v1-86ff3b4995f993732fca-9cfdf38b9eba223c.webp"/><link rel="preload" as="image" href="assets/img/app-store-badge.svg"/><link rel="stylesheet" href="assets/css/3cgp9wgn1jz2r.css" data-precedence="next"/><link rel="stylesheet" href="assets/css/2yivp3fx_0wqo.css" data-precedence="next"/><link rel="stylesheet" href="assets/css/42i-eaj0l7rw6.css" data-precedence="next"/><meta name="next-size-adjust" content=""/><title>Prime Capital — Privacy-First Personal Finance for iPhone</title><meta name="description" content="Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian."/><meta name="robots" content="index, follow"/><link rel="canonical" href="https://prime-capital-app.pages.dev/"/><meta property="og:title" content="Prime Capital — Privacy-First Personal Finance for iPhone"/><meta property="og:description" content="Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian."/><meta property="og:site_name" content="Prime Capital"/><meta property="og:image" content="https://prime-capital-app.pages.dev/assets/img/og-image.png"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Prime Capital — Privacy-First Personal Finance for iPhone"/><meta name="twitter:description" content="Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian."/><meta name="twitter:image" content="https://prime-capital-app.pages.dev/assets/img/og-image.png"/><link rel="icon" href="assets/img/v1-86ff3b4995f993732fca-9cfdf38b9eba223c.webp"/><style>
-.pc-phone{display:flex;flex-direction:column;align-items:center;gap:18px;height:100%;justify-content:center}
-.pc-phone-frame{position:relative;box-sizing:content-box;width:min(260px,20vw);height:min(565px,43.45vw);background:#050505;border-radius:44px;padding:4px;box-shadow:0 0 0 1.5px rgba(255,255,255,.14)}
-.pc-phone-notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:21%;height:17px;background:#050505;border-radius:9px;z-index:2}
-.pc-phone-screen{position:relative;width:100%;height:100%;border-radius:41px;overflow:hidden;background:#000}
-.pc-phone-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .45s ease}
-.pc-phone-shot.is-active{opacity:1}
-.pc-phone-controls{display:flex;align-items:center;gap:16px}
-.pc-phone-dots{display:flex;gap:7px}
-.pc-phone-dot{width:7px;height:7px;padding:0;border:0;border-radius:999px;background:var(--w-border);cursor:pointer;transition:width .3s cubic-bezier(.2,.7,.2,1),background .3s}
-.pc-phone-dot.is-active{width:22px;background:var(--w-accent)}
-.pc-phone-arrow{width:32px;height:32px;border-radius:999px;border:1px solid var(--w-border);background:transparent;color:var(--w-fg);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s}
-.pc-phone-arrow:hover{border-color:var(--w-accent-line);background:var(--w-accent-soft)}
-@media (prefers-reduced-motion:reduce){.pc-phone-shot,.pc-phone-dot{transition:none}}
-@media (max-width:760px){
-  /* explicit width+height (not aspect-ratio) -- aspect-ratio combined with a
-     min()-based width was letterboxing the screenshot to ~80% height on real
-     mobile WebKit, meaning the box's rendered height wasn't actually landing
-     on the 1320:2868 ratio the aspect-ratio property was supposed to derive.
-     Computing height directly (same 1320:2868 ratio, same min() shape) sidesteps
-     that derivation entirely -- both branches are locked to the same ratio by
-     construction, so there's nothing left for a browser to get wrong. */
-  .pc-phone-frame{box-sizing:content-box;width:min(190px,50vw);height:min(413px,108.64vw);aspect-ratio:auto;border-radius:32px;padding:3px;box-shadow:0 0 0 1.1px rgba(255,255,255,.14)}
-  .pc-phone-notch{top:8.8px;height:12.4px;border-radius:6.5px}
-  .pc-phone-screen{border-radius:30px}
-  .pc-phone-shot{object-fit:contain}
-  .alf-story-device .pc-phone{justify-content:flex-end;padding-bottom:8%}
-  /* remove the hero's own phone on mobile entirely -- only the feature
-     section's synced phone stays, per explicit request */
-  .alf-hero-visual{display:none}
-  /* the vendor's own mobile grid still reserves a 2nd row (minmax(0,1fr))
-     for the now-hidden phone -- collapse to a single row so the copy
-     column doesn't leave dead space where the phone used to be */
-  .alf-hero-grid{grid-template-rows:auto}
-  /* .alf-hero's own min-height (a clamp sized for phone+copy together) was
-     still forcing a tall section even with the phone gone, leaving a big
-     empty gap below the copy. Let it size to its actual content instead. */
-  .alf-hero{min-height:auto}
+<!doctype html>
+<!-- Home page template. generator.py injects the SEO block into <head> and writes site/index.html.
+     Notes carried over from earlier phone-mockup bugs: explicit width+height (never aspect-ratio + min()),
+     box-sizing:content-box on the frame, object-fit:contain on screenshots, and every dimension scales
+     off the single --w variable so bezel, radius and island stay proportional. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prime Capital — Privacy-First Personal Finance for iPhone</title>
+<meta name="description" content="Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian.">
+<link rel="canonical" href="https://prime-capital-app.pages.dev/">
+<meta name="theme-color" content="#f7f5f0">
+<meta name="apple-itunes-app" content="app-id=6792149434">
+<link rel="icon" href="assets/img/v1-86ff3b4995f993732fca-9cfdf38b9eba223c.webp">
+<link rel="apple-touch-icon" href="assets/img/v1-86ff3b4995f993732fca-9cfdf38b9eba223c.webp">
+<link rel="preload" as="image" href="assets/img/shot-dashboard-780.webp">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Prime Capital">
+<meta property="og:title" content="Prime Capital — Privacy-First Personal Finance for iPhone">
+<meta property="og:description" content="Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian.">
+<meta property="og:url" content="https://prime-capital-app.pages.dev/">
+<meta property="og:image" content="https://prime-capital-app.pages.dev/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Prime Capital">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prime Capital — Privacy-First Personal Finance for iPhone">
+<meta name="twitter:description" content="Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian.">
+<meta name="twitter:image" content="https://prime-capital-app.pages.dev/assets/img/og-image.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Prime Capital", "operatingSystem": "iOS", "applicationCategory": "FinanceApplication", "url": "https://prime-capital-app.pages.dev/", "downloadUrl": "https://apps.apple.com/app/id6792149434", "description": "Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian.", "inLanguage": ["en", "de", "es", "fr", "it", "nl", "pt", "ru", "hy"]}</script>
+<style>
+:root{
+  --bg:#f7f5f0; --stone:#ecE9e1; --stone2:#e3dfd5; --ink:#131313; --muted:#67655f; --hair:rgba(19,19,19,.11);
+  --accent:#1f4d3a;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+  --ease:cubic-bezier(.32,.72,0,1);
 }
-</style><style>
-.alf-fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.alf-fgrid-card{background:var(--w-card);border:1px solid var(--w-border);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:14px}
-.alf-fgrid-icon{width:44px;height:44px;border-radius:12px;background:var(--w-accent-soft);display:flex;align-items:center;justify-content:center;color:var(--w-accent)}
-.alf-fgrid-icon svg{width:22px;height:22px}
-.alf-fgrid-card h3{font-size:1.08rem;font-weight:600;margin:0}
-.alf-fgrid-card p{color:var(--w-muted);font-size:.92rem;margin:0;line-height:1.5}
-.alf-fgrid-phone{display:none}
-@media (max-width:820px){.alf-fgrid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:760px){
-  .alf-fgrid{display:block;position:relative;overflow:hidden;min-height:230px}
-  .alf-fgrid-card{
-    position:absolute;top:0;left:0;right:0;
-    transform:translateX(100%);opacity:0;pointer-events:none;
-    transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s ease;
-  }
-  .alf-fgrid-card.is-active{transform:translateX(0);opacity:1;pointer-events:auto}
-  .alf-fgrid-card.is-prev{transform:translateX(-100%);opacity:0}
-  .alf-fgrid-card.no-anim{transition:none}
-  .alf-fgrid-phone{display:flex;justify-content:center;margin-bottom:24px}
-  .alf-fgrid-phone .pc-phone-frame{width:min(150px,42vw);height:min(326px,91.6vw);aspect-ratio:auto;box-sizing:content-box;border-radius:25px;padding:2px;box-shadow:0 0 0 1.1px rgba(255,255,255,.14)}
-  .alf-fgrid-phone .pc-phone-notch{top:6.9px;height:9.8px;border-radius:5px}
-  .alf-fgrid-phone .pc-phone-screen{border-radius:24px}
+*{box-sizing:border-box;margin:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{font:16px/1.55 var(--sans);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:rgba(247,245,240,.96);border-bottom:1px solid var(--hair)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-.01em;text-decoration:none}
+.brand img{width:28px;height:28px;border-radius:8px}
+.btn{display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fff;font-weight:600;font-size:14px;text-decoration:none;transition:transform .35s var(--ease),background .3s}
+.btn:hover{background:#000}.btn:active{transform:scale(.97)}
+
+/* type */
+h1{font-size:clamp(44px,6.6vw,84px);line-height:1;letter-spacing:-.045em;font-weight:600;max-width:680px;text-wrap:balance}
+h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-weight:600;max-width:680px;text-wrap:balance}
+.lede{margin-top:20px;font-size:clamp(18px,1.8vw,21px);line-height:1.45;color:var(--muted);max-width:480px;text-wrap:pretty}
+.cta{margin-top:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cta img{height:48px;display:block;transition:transform .35s var(--ease)}
+.cta a:active img{transform:scale(.97)}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+
+/* phone */
+.phone{--w:260px;box-sizing:content-box;position:relative;width:var(--w);height:calc(var(--w)*2.1727);padding:4px;border-radius:calc(var(--w)*.17);background:#0c0c0c;box-shadow:0 0 0 1px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.08) inset,0 40px 60px -30px rgba(19,19,19,.45),0 12px 24px -12px rgba(19,19,19,.25);flex:none}
+.phone img{display:block;width:100%;height:100%;object-fit:contain;border-radius:calc(var(--w)*.157);background:#000;pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
+.phone:after{content:"";position:absolute;left:50%;top:calc(var(--w)*.0462);width:21%;height:calc(var(--w)*.0654);transform:translateX(-50%);border-radius:calc(var(--w)*.0346);background:#050505;z-index:2147483000;pointer-events:none}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;padding:48px 24px 40px;max-width:1160px;margin:0 auto}
+.stage{position:relative;background:var(--stone);border:1px solid var(--hair);border-radius:36px;height:560px;overflow:hidden;display:flex;justify-content:center;align-items:flex-end}
+.stage .phone{--w:270px;margin-bottom:-70px;transform-style:preserve-3d;will-change:transform}
+.note{position:absolute;left:20px;bottom:20px;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:16px;background:rgba(247,245,240,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);font-size:13px;font-weight:600;line-height:1.3;box-shadow:0 10px 24px -14px rgba(19,19,19,.35)}
+.note i{width:30px;height:30px;border-radius:9px;background:var(--ink);display:grid;place-items:center;flex:none}
+.note svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.note small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+
+/* showcase */
+.show{padding-top:56px;padding-bottom:24px}
+.show-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.card{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;background:var(--stone);border:1px solid var(--hair);border-radius:36px;overflow:hidden;min-height:560px}
+.tabs{display:flex;flex-direction:column;justify-content:center;padding:24px 16px 24px 40px}
+.tab{position:relative;text-align:left;font:inherit;background:none;border:0;border-top:1px solid var(--hair);padding:18px 0 18px 20px;cursor:pointer;color:var(--muted);transition:color .3s}
+.tab:first-child{border-top:0}
+.tab:before,.tab .bar{content:"";position:absolute;left:0;top:20px;bottom:20px;width:2px;border-radius:2px}
+.tab:before{background:var(--hair);transform:scaleY(0);transform-origin:center;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.tab .bar{background:var(--accent);transform:scaleY(0);transform-origin:top;will-change:transform}
+.tab .th{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--ink);opacity:.62;transition:opacity .6s cubic-bezier(.4,0,.2,1)}
+.tab .th .s{display:none}
+.tab .tp{display:block;max-height:0;overflow:hidden;opacity:0;font-size:15px;line-height:1.5;color:var(--muted);max-width:380px;transition:max-height .8s cubic-bezier(.4,0,.2,1),opacity .7s cubic-bezier(.4,0,.2,1) .1s,margin .6s cubic-bezier(.4,0,.2,1)}
+.tab[aria-selected="true"] .th{opacity:1}
+.tab[aria-selected="true"]:before{transform:scaleY(1)}
+.card.noauto .tab[aria-selected="true"] .bar{transform:scaleY(1)}
+.tab[aria-selected="true"] .tp{max-height:120px;opacity:1;margin-top:6px}
+.tab:hover .th{opacity:1}
+.view{position:relative;background:var(--stone2);display:flex;justify-content:center;align-items:flex-end;overflow:hidden;border-left:1px solid var(--hair)}
+.view .phone{--w:250px;margin-top:40px;margin-bottom:-90px;cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.dots{position:absolute;top:14px;right:14px;z-index:3;display:flex}
+.dots button{width:22px;height:30px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.dots button:before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(19,19,19,.25);transition:width .4s var(--ease),background .3s}
+.dots button[aria-current="true"]:before{width:20px;border-radius:4px;background:var(--accent)}
+.view .phone img{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);opacity:0;z-index:1;will-change:opacity;transition:opacity 0s linear 1s}
+.view .phone img.on{opacity:1;z-index:2;transition:opacity 1s cubic-bezier(.4,0,.2,1)}
+.also{margin-top:20px;font-size:14px;color:var(--muted)}
+.also b{color:var(--ink);font-weight:600}
+
+/* privacy band */
+.band{padding-top:88px;padding-bottom:8px}
+.band p.big{font-size:clamp(30px,4.6vw,56px);line-height:1.04;letter-spacing:-.04em;font-weight:600;max-width:680px}
+.band .w{color:rgba(19,19,19,.22);transition:color .7s var(--ease)}
+.band .w.on{color:var(--ink)}
+.facts{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--hair)}
+.fact{padding:24px 24px 0 0}
+.fact+.fact{padding-left:24px;border-left:1px solid var(--hair)}
+.fact b{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em}
+.fact span{display:block;margin-top:4px;color:var(--muted);font-size:15px;max-width:300px}
+
+/* faq */
+.faqs{padding-top:72px}
+.faq{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;column-gap:48px;align-items:start;border-top:1px solid var(--hair)}
+.faq .col{display:flex;flex-direction:column;min-width:0}
+details{border-bottom:1px solid var(--hair)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:60px;font-size:17px;font-weight:600;letter-spacing:-.01em}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"";flex:none;width:8px;height:8px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg) translateY(-2px)}
+details[open]:not(.closing) summary:after{transform:rotate(225deg) translateY(-2px)}
+summary:after{transition:transform .5s cubic-bezier(.4,0,.2,1)}
+details p{padding:0 0 20px;color:var(--muted);font-size:15px;max-width:460px}
+
+/* close */
+.end{margin-top:72px;border-top:1px solid var(--hair);padding:56px 0}
+.end .wrap{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
+.end h2{font-size:clamp(28px,3.4vw,40px)}
+.end .cta{margin-top:0}
+footer{border-top:1px solid var(--hair);padding:20px 0 28px;font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:center;padding:0 10px}
+
+.rv{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.band .w{color:var(--ink);transition:none}.tab .tp,.tab:before,.view .phone img,.cap{transition:none!important}.view .phone img{transform:none!important}}
+@media (prefers-reduced-transparency:reduce){header,.note{background:var(--bg);backdrop-filter:none}}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:32px}
+  .stage{height:480px;border-radius:28px}
+  .stage .phone{--w:230px}
+  .card{grid-template-columns:1fr;border-radius:28px;min-height:0}
+  .tabs{flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:16px;gap:8px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:none;border:1px solid var(--hair);border-radius:999px;padding:0 16px;min-height:44px;display:flex;align-items:center;background:var(--bg)}
+  .tab:first-child{border-top:1px solid var(--hair)}
+  .tab:before,.tab .bar{display:none}
+  .tab .th{font-size:15px}.tab .th .l{display:none}.tab .th .s{display:inline}
+  .tab .tp{display:none}
+  .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink)}
+  .tab[aria-selected="true"] .th{color:#fff}
+  .view{border-left:0;border-top:1px solid var(--hair);height:430px}
+  .view .phone{--w:220px;margin-top:28px}
+  .cap{display:block}
+  .facts{grid-template-columns:1fr}
+  .fact,.fact+.fact{padding:20px 0;border-left:0;border-bottom:1px solid var(--hair)}
+  .faq{grid-template-columns:1fr}
+  .band{padding-top:64px}
 }
-@media (prefers-reduced-motion:reduce){.alf-fgrid-card{transition:none}}
-</style><style>.alf-btn{border-radius:14px;min-height:44px}html,body{background:#fbfbfa}.alf-footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}.pc-phone-dot{position:relative}.pc-phone-dot:after{content:"";position:absolute;inset:-18px -3px}@media (max-width:760px){.alf-fgrid-card{cursor:pointer}}.alf-cta-panel{background:var(--w-bg)}.alf-cta-panel:before{display:none}@media (max-width:760px){.alf-hero-glow{display:none}.alf-hero-copy .alf-badges{margin-bottom:28px}}</style><meta name="theme-color" content="#fbfbfa"/><meta name="apple-itunes-app" content="app-id=6792149434"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Prime Capital", "operatingSystem": "iOS", "applicationCategory": "FinanceApplication", "url": "https://prime-capital-app.pages.dev/", "downloadUrl": "https://apps.apple.com/app/id6792149434", "description": "Prime Capital is a local-first personal finance tracker for iPhone with no server, no sign-up, and no ads. Your accounts and transactions stay on your device or your own private iCloud — never on ours. Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian.", "inLanguage": ["en", "de", "es", "fr", "it", "nl", "pt", "ru", "hy"]}</script></head><body class="antialiased"><div hidden=""><!--$--><!--/$--></div><div class="alf-site" style="--w-bg:#fbfbfa;--w-fg:#141414;--w-muted:#6b6b6b;--w-card:#ffffff;--w-border:rgba(20, 20, 20, 0.12);--w-band:#f0efec;--w-accent:#141414;--w-primary:#f3f3f1;--w-primary-fg:#141414;--w-secondary:#e8e7e3;--w-secondary-fg:#141414;--w-accent-fg:#ffffff;--w-accent-soft:rgba(20, 20, 20, 0.06);--w-accent-glow:rgba(20, 20, 20, 0.12);--w-accent-line:rgba(20, 20, 20, 0.35);--w-shadow:0 30px 80px -30px rgba(0,0,0,0.8);--w-font-display:ui-serif, "New York", Georgia, "Times New Roman", serif;--w-font-body:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;--w-display-tracking:-0.01em;--w-display-weight:600;--w-radius:14px;color-scheme:light" data-viewport="desktop" data-mode="public" data-theme="v1"><header class="alf-nav"><div class="alf-container alf-nav-inner"><span class="alf-brand"><img class="alf-logo" src="assets/img/v1-86ff3b4995f993732fca-9cfdf38b9eba223c.webp" alt=""/><span>Prime Capital</span></span><div class="alf-nav-actions"><a href="https://apps.apple.com/app/id6792149434" target="_blank" rel="noopener noreferrer" class="alf-btn alf-btn-primary"><span>Download</span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 256 256"><path d="M204,64V168a12,12,0,0,1-24,0V93L72.49,200.49a12,12,0,0,1-17-17L163,76H88a12,12,0,0,1,0-24H192A12,12,0,0,1,204,64Z"></path></svg></a></div></div></header><main><section id="hero" class="alf-hero" data-section="hero" style="order:0"><div class="alf-hero-glow" aria-hidden="true"></div><div class="alf-container alf-hero-grid"><div class="alf-hero-copy"><div class="alf-editable-shell" data-inline-kind="inline"><span class="alf-eyebrow alf-enter" style="--alf-delay:0ms">No account &middot; No server &middot; No ads</span></div><div class="alf-editable-shell" data-inline-kind="block"><h1 class="alf-display alf-h1 alf-enter" style="--alf-delay:80ms">A Personal Finance Tracker for iPhone</h1></div><div class="alf-editable-shell" data-inline-kind="block"><div class="alf-enter" style="--alf-delay:200ms"><ul style="list-style:none;margin:0 0 26px;padding:0;display:flex;flex-direction:column;gap:10px;max-width:34rem">
-<li style="display:flex;gap:10px;align-items:flex-start;font-size:.95rem;color:var(--w-muted)"><span aria-hidden="true" style="color:var(--w-accent);flex:none">&#10003;</span><span><b style="color:var(--w-fg);font-weight:600">No account, ever.</b> Nothing to sign up for, nothing to lose the password to.</span></li>
-<li style="display:flex;gap:10px;align-items:flex-start;font-size:.95rem;color:var(--w-muted)"><span aria-hidden="true" style="color:var(--w-accent);flex:none">&#10003;</span><span><b style="color:var(--w-fg);font-weight:600">Nothing leaves your device.</b> No server, no analytics, no third-party SDKs of any kind.</span></li>
-<li style="display:flex;gap:10px;align-items:flex-start;font-size:.95rem;color:var(--w-muted)"><span aria-hidden="true" style="color:var(--w-accent);flex:none">&#10003;</span><span><b style="color:var(--w-fg);font-weight:600">You control sync.</b> Optional, and only through your own private iCloud &mdash; we never see it.</span></li>
-</ul></div></div><div class="alf-enter" style="--alf-delay:240ms"><div class="alf-badges"><a class="alf-badge" href="https://apps.apple.com/app/id6792149434" target="_blank" rel="noopener noreferrer"><img src="assets/img/app-store-badge.svg" alt="Download on the App Store" draggable="false"/></a></div><p style="margin:14px 0 0;font-size:.85rem;color:var(--w-muted)">Available in English, German, Spanish, French, Italian, Dutch, Portuguese, Russian, and Armenian.</p></div></div><div class="alf-hero-visual alf-enter " style="--alf-delay:120ms"><div class="pc-phone"><div class="pc-phone-frame"><div class="pc-phone-notch"></div><div class="pc-phone-screen"><img src="assets/img/shot-dashboard.webp" srcset="assets/img/shot-dashboard-780.webp 780w, assets/img/shot-dashboard.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Dashboard: net worth, accounts, and recent activity" class="pc-phone-shot is-active" loading="eager"/><img src="assets/img/shot-accounts.webp" srcset="assets/img/shot-accounts-780.webp 780w, assets/img/shot-accounts.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Accounts screen with income, expenses, and transaction counts" class="pc-phone-shot" loading="lazy"/><img src="assets/img/shot-transfer.webp" srcset="assets/img/shot-transfer-780.webp 780w, assets/img/shot-transfer.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Transfer screen moving funds between accounts" class="pc-phone-shot" loading="lazy"/><img src="assets/img/shot-add-expense.webp" srcset="assets/img/shot-add-expense-780.webp 780w, assets/img/shot-add-expense.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Add a new expense with account and category picker" class="pc-phone-shot" loading="lazy"/><img src="assets/img/shot-settings.webp" srcset="assets/img/shot-settings-780.webp 780w, assets/img/shot-settings.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Settings: currency, categories, appearance, and security" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-currency.webp" srcset="assets/img/feature-currency-780.webp 780w, assets/img/feature-currency.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Multi-currency account with a live exchange rate" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-design.webp" srcset="assets/img/feature-design-780.webp 780w, assets/img/feature-design.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Appearance settings with the color theme picker" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-lockscreen.webp" srcset="assets/img/feature-lockscreen-780.webp 780w, assets/img/feature-lockscreen.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Face ID / PIN lock screen" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-reports.webp" srcset="assets/img/feature-reports-780.webp 780w, assets/img/feature-reports.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Generated PDF financial report" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-import.webp" srcset="assets/img/feature-import-780.webp 780w, assets/img/feature-import.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Importing a bank statement" class="pc-phone-shot" loading="lazy"/><img src="assets/img/shot-statistics.webp" srcset="assets/img/shot-statistics-780.webp 780w, assets/img/shot-statistics.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Statistics: spending by category and balance growth" class="pc-phone-shot" loading="lazy"/></div></div><div class="pc-phone-controls"><button type="button" class="pc-phone-arrow" data-dir="-1" aria-label="Previous screenshot">&#8249;</button><div class="pc-phone-dots"><button type="button" class="pc-phone-dot is-active" aria-label="Show screenshot 1" data-idx="0"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 2" data-idx="1"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 3" data-idx="2"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 4" data-idx="3"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 5" data-idx="4"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 6" data-idx="5"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 7" data-idx="6"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 8" data-idx="7"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 9" data-idx="8"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 10" data-idx="9"></button><button type="button" class="pc-phone-dot" aria-label="Show screenshot 11" data-idx="10"></button></div><button type="button" class="pc-phone-arrow" data-dir="1" aria-label="Next screenshot">&#8250;</button></div></div></div></div></section><section id="features" class="alf-features" data-section="features" style="order:1"><div class="alf-container"><div class="alf-reveal alf-section-head" style="--alf-delay:0ms"><div class="alf-editable-shell" data-inline-kind="block"><h2 class="alf-display alf-h2">Your Complete Financial Picture</h2></div><div class="alf-editable-shell" data-inline-kind="block"><p>A focused view of your finances, from everyday entries to account movement.</p></div></div><div class="alf-fgrid-phone"><div class="pc-phone"><div class="pc-phone-frame"><div class="pc-phone-notch"></div><div class="pc-phone-screen"><img src="assets/img/shot-dashboard.webp" srcset="assets/img/shot-dashboard-780.webp 780w, assets/img/shot-dashboard.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Dashboard" class="pc-phone-shot is-active" loading="lazy"/><img src="assets/img/shot-add-expense.webp" srcset="assets/img/shot-add-expense-780.webp 780w, assets/img/shot-add-expense.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Add a transaction" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-currency.webp" srcset="assets/img/feature-currency-780.webp 780w, assets/img/feature-currency.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Currency and live rate" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-design.webp" srcset="assets/img/feature-design-780.webp 780w, assets/img/feature-design.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Appearance and themes" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-lockscreen.webp" srcset="assets/img/feature-lockscreen-780.webp 780w, assets/img/feature-lockscreen.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Lock screen" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-reports.webp" srcset="assets/img/feature-reports-780.webp 780w, assets/img/feature-reports.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="PDF report" class="pc-phone-shot" loading="lazy"/><img src="assets/img/feature-import.webp" srcset="assets/img/feature-import-780.webp 780w, assets/img/feature-import.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Import a statement" class="pc-phone-shot" loading="lazy"/><img src="assets/img/shot-transfer.webp" srcset="assets/img/shot-transfer-780.webp 780w, assets/img/shot-transfer.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Transfer" class="pc-phone-shot" loading="lazy"/><img src="assets/img/shot-statistics.webp" srcset="assets/img/shot-statistics-780.webp 780w, assets/img/shot-statistics.webp 1320w" sizes="(max-width:760px) 150px, 260px" alt="Statistics" class="pc-phone-shot" loading="lazy"/></div></div></div></div><div class="alf-fgrid"><div class="alf-fgrid-card is-active"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,64V208H32V48H208A16,16,0,0,1,224,64Z" opacity="0.2"></path><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z"></path></svg></div><h3 class="alf-display">See Your Full Picture</h3><p>View net worth, monthly income, spending, and top categories as soon as you open the app.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M96,240l16-80L48,136,160,16,144,96l64,24Z" opacity="0.2"></path><path d="M215.79,118.17a8,8,0,0,0-5-5.66L153.18,90.9l14.66-73.33a8,8,0,0,0-13.69-7l-112,120a8,8,0,0,0,3,13l57.63,21.61L88.16,238.43a8,8,0,0,0,13.69,7l112-120A8,8,0,0,0,215.79,118.17ZM109.37,214l10.47-52.38a8,8,0,0,0-5-9.06L62,132.71l84.62-90.66L136.16,94.43a8,8,0,0,0,5,9.06l52.8,19.8Z"></path></svg></div><h3 class="alf-display">Add Entries Quickly</h3><p>Record an expense or income in a few taps, with custom categories and suggested emojis. Or scan a receipt to fill in the amount, date, and category — read on your iPhone, never stored.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,80V192a8,8,0,0,1-8,8H56a16,16,0,0,1-16-16V56A16,16,0,0,0,56,72H216A8,8,0,0,1,224,80Z" opacity="0.2"></path><path d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z"></path></svg></div><h3 class="alf-display">Multi-Currency, Real Rates</h3><p>Add accounts in any of 24 currencies and fetch that day's exchange rate with one tap — never type one in by hand.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24a104,104,0,1,0,104,104A104.12,104.12,0,0,0,128,24Z" opacity="0.2"></path><path d="M128,16A112,112,0,1,0,240,128,112.13,112.13,0,0,0,128,16Zm0,208a96,96,0,1,1,96-96A96.11,96.11,0,0,1,128,224Z"></path><circle cx="92" cy="108" r="16"></circle><circle cx="164" cy="108" r="16"></circle><circle cx="128" cy="168" r="16"></circle></svg></div><h3 class="alf-display">Make It Yours</h3><p>Switch between eight complete color designs, from OLED black to warm cream, any time in Settings.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,96V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V96a8,8,0,0,1,8-8H208A8,8,0,0,1,216,96Z" opacity="0.2"></path><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Zm-68-56a12,12,0,1,1-12-12A12,12,0,0,1,140,152Z"></path></svg></div><h3 class="alf-display">Locked Down</h3><p>Face ID or a PIN keeps the app closed until you open it — on by default, always under your control.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M200,88H152V40Z" opacity="0.2"></path><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48Z"></path><rect x="80" y="128" width="96" height="12" rx="6"></rect><rect x="80" y="152" width="96" height="12" rx="6"></rect><rect x="80" y="176" width="64" height="12" rx="6"></rect></svg></div><h3 class="alf-display">A Report, Designed</h3><p>Balances, spending, and a 3-month trend — generated as a real PDF you can save or share.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><rect x="40" y="152" width="176" height="64" rx="12" opacity="0.2"></rect><path d="M224,152v56a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V152a8,8,0,0,1,16,0v56H208V152a8,8,0,0,1,16,0Z"></path><path d="M170.34,133.66l-40,40a8,8,0,0,1-11.32,0l-40-40a8,8,0,0,1,11.32-11.32L120,152V32a8,8,0,0,1,16,0V152l29.66-29.66a8,8,0,0,1,11.32,11.32Z"></path></svg></div><h3 class="alf-display">Bring Your Bank Statement</h3><p>Import an OFX, QFX, or CSV export from your bank and match its columns in a few taps.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,84a8,8,0,0,1-8,8H59.31l26.35,26.34a8,8,0,0,1-11.32,11.32l-40-40a8,8,0,0,1,0-11.32l40-40a8,8,0,0,1,11.32,11.32L59.31,76H216A8,8,0,0,1,224,84Z" opacity="0.2"></path><path d="M228.69,172l-40,40a8,8,0,0,1-11.32-11.32L203.31,180H40a8,8,0,0,1,0-16H203.31l-25.94-25.94a8,8,0,0,1,11.32-11.32l40,40A8,8,0,0,1,228.69,172Z"></path></svg></div><h3 class="alf-display">Move Money Between Accounts</h3><p>Transfer between your accounts in a couple of taps, with balances updating instantly.</p></div><div class="alf-fgrid-card"><div class="alf-fgrid-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><rect x="32" y="128" width="48" height="96" rx="8" opacity="0.2"></rect><rect x="104" y="80" width="48" height="144" rx="8" opacity="0.2"></rect><rect x="176" y="32" width="48" height="192" rx="8" opacity="0.2"></rect><path d="M224,216a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V40a8,8,0,0,1,16,0V208H216A8,8,0,0,1,224,216Z"></path><path d="M56,208a8,8,0,0,1-8-8V128a8,8,0,0,1,16,0v72A8,8,0,0,1,56,208Z"></path><path d="M128,208a8,8,0,0,1-8-8V80a8,8,0,0,1,16,0v120A8,8,0,0,1,128,208Z"></path><path d="M200,208a8,8,0,0,1-8-8V32a8,8,0,0,1,16,0v168A8,8,0,0,1,200,208Z"></path></svg></div><h3 class="alf-display">Spending, Broken Down</h3><p>See where your money goes by category, track balance growth over time, and get simple insights on trends.</p></div></div></div></section><section id="cta" class="alf-cta" data-section="cta" style="order:3"><div class="alf-container"><div class="alf-reveal alf-cta-panel" style="--alf-delay:0ms"><div class="alf-editable-shell" data-inline-kind="block"><h2 class="alf-display alf-h2">No Account. No Catch.</h2></div><div class="alf-editable-shell" data-inline-kind="block"><p class="alf-lede">Nothing to sign up for, nothing to hand over &mdash; just download and go.</p></div><div class="alf-badges"><a class="alf-badge" href="https://apps.apple.com/app/id6792149434" target="_blank" rel="noopener noreferrer"><img src="assets/img/app-store-badge.svg" alt="Download on the App Store" draggable="false"/></a></div></div></div></section></main><footer class="alf-footer"><div class="alf-container alf-footer-inner"><div>© <!-- -->2026<!-- --> <!-- -->Prime Capital</div><ul class="alf-footer-links"><li><a href="privacy/">Privacy</a></li><li><a href="terms/">Terms</a></li><li><a href="support/">Support</a></li><li><a href="mailto:surenegian00@gmail.com"><span class="alf-sr-only">Email</span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,44H32A12,12,0,0,0,20,56V192a20,20,0,0,0,20,20H216a20,20,0,0,0,20-20V56A12,12,0,0,0,224,44ZM193.15,68,128,127.72,62.85,68ZM44,188V83.28l75.89,69.57a12,12,0,0,0,16.22,0L212,83.28V188Z"></path></svg></a></li></ul></div></footer></div><!--$--><!--/$--><div data-rht-toaster="" style="position:fixed;z-index:9999;top:16px;left:16px;right:16px;bottom:16px;pointer-events:none"></div><script>
+.cap{display:none;transition:opacity .35s ease;padding:20px 24px 4px;font-size:15px;color:var(--muted);background:var(--stone)}
+@media (max-width:900px){.cap{display:block}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="./"><img src="assets/img/v1-86ff3b4995f993732fca-9cfdf38b9eba223c.webp" alt="">Prime Capital</a>
+  <a class="btn" href="https://apps.apple.com/app/id6792149434">Download</a>
+</div></header>
+
+<main>
+<section class="hero">
+  <div class="rv">
+    <h1>Keep your money in your pocket.</h1>
+    <p class="lede">A personal finance tracker for iPhone that never asks who you are. No account, no server, no ads.</p>
+    <div class="cta"><a href="https://apps.apple.com/app/id6792149434"><img src="assets/img/app-store-badge.svg" alt="Download on the App Store"></a></div>
+  </div>
+  <div class="stage rv">
+    <div class="phone" id="tilt"><img src="assets/img/shot-dashboard-780.webp" alt="Dashboard: net worth, accounts and recent activity"></div>
+  </div>
+</section>
+
+<section class="wrap show">
+  <div class="show-head rv"><div><span class="eyebrow">Inside the app</span><h2 style="margin-top:10px">Six things, done properly.</h2></div></div>
+  <div class="card rv">
+    <div class="tabs" id="tabs" role="tablist" aria-label="Features"></div>
+    <div class="cap" id="cap"></div>
+    <div class="view"><div class="dots" id="dots" aria-label="Choose a screen"></div><div class="phone" id="view" aria-live="polite"></div></div>
+  </div>
+  <p class="also rv"><b>Also:</b> transfers between accounts, recurring entries, eight color designs, nine languages, and a hide button for your net worth.</p>
+</section>
+
+<section class="wrap band">
+  <p class="big" id="tag"></p>
+  <div class="facts rv">
+    <div class="fact"><b>No account</b><span>Nothing to sign up for, and no password to lose.</span></div>
+    <div class="fact"><b>No server</b><span>Your data lives on your iPhone, and in your own iCloud if you choose.</span></div>
+    <div class="fact"><b>No ads</b><span>No analytics and no third party SDKs of any kind.</span></div>
+  </div>
+</section>
+
+<section class="wrap faqs">
+  <h2 class="rv">Quick answers</h2>
+  <div class="faq rv">
+    <div class="col">
+      <details><summary>Do I need an account?</summary><p>No. Download it and start. There is nothing to sign up for.</p></details>
+      <details><summary>Where is my data?</summary><p>On your iPhone. If you turn sync on, it is backed up to your own private iCloud, which we never see.</p></details>
+      <details><summary>What happens to a scanned receipt?</summary><p>It is read on your iPhone to fill in the amount, date and category. It is never stored.</p></details>
+    </div>
+    <div class="col">
+      <details><summary>Can I bring my bank's data in?</summary><p>Yes. Import an OFX, QFX or CSV export and match its columns in a few taps.</p></details>
+      <details><summary>Can I keep a backup myself?</summary><p>Yes. Save a local copy from Data and Reports and restore from it later.</p></details>
+      <details><summary>Which languages?</summary><p>English, German, Spanish, French, Italian, Dutch, Portuguese, Russian and Armenian.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="end"><div class="wrap">
+  <h2 class="rv">No account. No catch.</h2>
+  <div class="cta rv"><a href="https://apps.apple.com/app/id6792149434"><img src="assets/img/app-store-badge.svg" alt="Download on the App Store"></a></div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Prime Capital</span>
+  <nav><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="support/">Support</a></nav></div></footer>
+
+<script>
 (function(){
-  var phone = document.querySelector('.pc-phone');
-  if (!phone) return;
-  var shots = phone.querySelectorAll('.pc-phone-shot');
-  var dots = phone.querySelectorAll('.pc-phone-dot');
-  var i = 0;
-  var timer = null;
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function show(n) {
-    i = (n + shots.length) % shots.length;
-    shots.forEach(function(s, idx){ s.classList.toggle('is-active', idx === i); });
-    dots.forEach(function(d, idx){ d.classList.toggle('is-active', idx === i); });
+  var IMG='assets/img/';
+  var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* hero: critically damped spring toward the pointer */
+  var el=document.getElementById('tilt');
+  if(!rm&&matchMedia('(hover:hover)').matches){
+    var tx=0,ty=0,x=0,y=0,vx=0,vy=0,raf=0,last=0;
+    var step=function(t){
+      var dt=Math.min(.032,(t-last)/1000||.016);last=t;var k=120,c=2*Math.sqrt(k);
+      vx+=(-k*(x-tx)-c*vx)*dt;vy+=(-k*(y-ty)-c*vy)*dt;x+=vx*dt;y+=vy*dt;
+      el.style.transform='perspective(1200px) rotateY('+x.toFixed(2)+'deg) rotateX('+(-y).toFixed(2)+'deg)';
+      raf=(Math.abs(x-tx)+Math.abs(y-ty)+Math.abs(vx)+Math.abs(vy)>.01)?requestAnimationFrame(step):0;
+    };
+    var heroVis=true;
+    new IntersectionObserver(function(es){heroVis=es[0].isIntersecting}).observe(document.querySelector('.stage'));
+    addEventListener('pointermove',function(e){
+      if(!heroVis)return;
+      tx=(e.clientX/innerWidth-.5)*10;ty=(e.clientY/innerHeight-.5)*8;
+      if(!raf){last=performance.now();raf=requestAnimationFrame(step)}
+    },{passive:true});
   }
-  var held = false;
-  function restartTimer(){
-    if (timer) clearInterval(timer);
-    timer = null;
-    if (reduceMotion || held || shots.length < 2) return;
-    timer = setInterval(function(){ show(i + 1); }, 4000);
+
+  /* showcase */
+  var SHORT=["Add","Accounts","Currency","Statistics","Reports","Lock"];
+  var F=[
+   ["shot-add-expense","Add an entry in a few taps","Expense or income, an account, a category. Or scan a receipt and let it fill in the amount, date and category.","New expense screen with a Scan button"],
+   ["shot-accounts","Every account, its own character","Pick an icon and a color for each, then see income, expenses and entry count at a glance.","Accounts screen"],
+   ["feature-currency","24 currencies, one tap for the rate","Add an account in any of them and fetch that day's exchange rate. Never type one in by hand.","Account with a currency and live rate"],
+   ["shot-statistics","See where it actually went","Spent, income and net against last month, your biggest category in plain words, and a bar that breaks it down.","Statistics screen"],
+   ["feature-reports","Reports out, statements in","A designed PDF, OFX, QFX or CSV imports, and a local backup you can restore whenever you need it.","Data and reports screen"],
+   ["feature-lockscreen","Locked until you open it","Face ID or a PIN keeps the app closed. It is on by default and always under your control.","Lock screen"]
+  ];
+  var tabs=document.getElementById('tabs'),view=document.getElementById('view'),cap=document.getElementById('cap'),cur=0;
+  tabs.innerHTML=F.map(function(f,i){
+    return '<button type="button" class="tab" role="tab" id="t'+i+'" aria-selected="'+(i===0)+'" tabindex="'+(i?-1:0)+'"><span class="th"><span class="l">'+f[1]+'</span><span class="s">'+SHORT[i]+'</span></span><span class="tp">'+f[2]+'</span><i class="bar"></i></button>';
+  }).join('');
+  view.innerHTML=F.map(function(f,i){return '<img decoding="async" class="'+(i?'':'on')+'" src="'+IMG+f[0]+'-780.webp" alt="'+f[3]+'">'}).join('');
+  cap.textContent=F[0][2];
+  var dots=document.getElementById('dots');
+  dots.innerHTML=F.map(function(f,i){return '<button type="button" aria-label="Show: '+f[1]+'" aria-current="'+(i===0)+'"></button>'}).join('');
+  var db=[].slice.call(dots.querySelectorAll('button'));
+  var tb=[].slice.call(tabs.querySelectorAll('.tab')),im=[].slice.call(view.querySelectorAll('img'));
+  im.forEach(function(p){p.draggable=false});
+  var zTop=2,DUR=4500,anim=null,hold={hover:false,focus:false,vis:false,hid:document.hidden};
+  var auto=!rm,card=document.querySelector('.card');
+  if(!auto)card.classList.add('noauto');
+  function go(i,focus){
+    i=(i+F.length)%F.length;cur=i;start();
+    tb.forEach(function(b,k){b.setAttribute('aria-selected',k===i);b.tabIndex=k===i?0:-1});
+    im.forEach(function(p,k){p.classList.toggle('on',k===i)});
+    im[i].style.zIndex=++zTop; // newest always on top, so each dissolve starts from the screen you were just on
+    db.forEach(function(d,k){d.setAttribute('aria-current',k===i)});
+    cap.style.opacity=0;
+    clearTimeout(go.c);go.c=setTimeout(function(){cap.textContent=F[i][2];cap.style.opacity=1},rm?0:240);
+    if(focus){tb[i].focus();tb[i].scrollIntoView({block:'nearest',inline:'nearest'})}
   }
-  function hold(v){ return function(){ held = v; restartTimer(); }; }
-  phone.addEventListener('mouseenter', hold(true));
-  phone.addEventListener('mouseleave', hold(false));
-  phone.addEventListener('focusin', hold(true));
-  phone.addEventListener('focusout', hold(false));
-  dots.forEach(function(d){ d.addEventListener('click', function(){ show(parseInt(d.dataset.idx, 10)); restartTimer(); }); });
-  phone.querySelectorAll('.pc-phone-arrow').forEach(function(btn){
-    btn.addEventListener('click', function(){ show(i + parseInt(btn.dataset.dir, 10)); restartTimer(); });
+  dots.addEventListener('click',function(e){var b=e.target.closest('button');if(b)go(db.indexOf(b))});
+  var px=null;
+  view.addEventListener('pointerdown',function(e){px=e.clientX});
+  view.addEventListener('pointerup',function(e){
+    if(px===null)return;var dx=e.clientX-px;px=null;
+    if(dx<-40)go(cur+1);else if(dx>40)go(cur-1);else go(cur+1);
   });
-  restartTimer();
-})();
-</script><script>
-(function(){
-  var cards = document.querySelectorAll('.alf-fgrid-card');
-  if (!cards.length) return;
-  var shots = document.querySelectorAll('.alf-fgrid-phone .pc-phone-shot');
-  var mq = window.matchMedia('(max-width:760px)');
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var i = 0;
-  var timer = null;
-  function show(n){
-    var next = (n + cards.length) % cards.length;
-    if (next === i) return;
-    var prevCard = cards[i];
-    var nextCard = cards[next];
-    prevCard.classList.remove('is-active');
-    prevCard.classList.add('is-prev');
-    nextCard.classList.add('is-active');
-    shots.forEach(function(s, idx){ s.classList.toggle('is-active', idx === next); });
-    i = next;
-    setTimeout(function(){
-      prevCard.classList.add('no-anim');
-      prevCard.classList.remove('is-prev');
-      void prevCard.offsetWidth;
-      prevCard.classList.remove('no-anim');
-    }, 520);
-  }
+  view.addEventListener('pointercancel',function(){px=null});
+  view.addEventListener('dragstart',function(e){e.preventDefault()});
+  function held(){return hold.hover||hold.focus||hold.hid||!hold.vis}
+  // the progress marker is a compositor animation; its end advances the slide, pausing it pauses autoplay
   function start(){
-    if (timer || !mq.matches || reduceMotion) return;
-    timer = setInterval(function(){ show(i + 1); }, 4500);
+    if(anim){anim.cancel();anim=null}
+    if(!auto)return;
+    var bar=tabs.querySelectorAll('.bar')[cur];
+    anim=bar.animate([{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{duration:DUR,easing:'linear',fill:'forwards'});
+    anim.onfinish=function(){go(cur+1)};
+    if(held())anim.pause();
   }
-  function stop(){
-    if (timer) { clearInterval(timer); timer = null; }
-  }
-  function sync(){ if (mq.matches) { start(); } else { stop(); } }
-  if (mq.addEventListener) mq.addEventListener('change', sync); else mq.addListener(sync);
-  // cards are only shown one at a time on mobile and had no controls: tap the
-  // card or the phone to go to the next one (and restart the auto-advance)
-  [document.querySelector('.alf-fgrid'), document.querySelector('.alf-fgrid-phone')].forEach(function(el){
-    if (!el) return;
-    el.addEventListener('click', function(){
-      if (!mq.matches) return;
-      show(i + 1);
-      stop(); start();
+  function applyHold(){if(anim){held()?anim.pause():anim.play()}}
+  card.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hold.hover=true;applyHold()}});
+  card.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hold.hover=false;applyHold()}});
+  // only keyboard focus pauses; a mouse click leaves focus on the button, which must not freeze autoplay
+  card.addEventListener('focusin',function(e){hold.focus=!!(e.target.matches&&e.target.matches(':focus-visible'));applyHold()});
+  card.addEventListener('focusout',function(){hold.focus=false;applyHold()});
+  document.addEventListener('visibilitychange',function(){hold.hid=document.hidden;applyHold()});
+  new IntersectionObserver(function(es){es.forEach(function(e){hold.vis=e.isIntersecting;applyHold()})},{threshold:.35}).observe(card);
+  start();
+  // decode every screenshot up front so the first switch to each one never hitches
+  im.forEach(function(p){if(p.decode)p.decode().catch(function(){})});
+  tabs.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('.tab'):null;
+    if(b)go(tb.indexOf(b));
+  });
+  tabs.addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();go(cur+1,true)}
+    if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();go(cur-1,true)}
+  });
+
+  /* FAQ: smooth, interruptible unfold */
+  var EASE='cubic-bezier(.4,0,.2,1)';
+  document.querySelectorAll('.faq details').forEach(function(d){
+    var sm=d.querySelector('summary'),ans=d.querySelector('p');
+    sm.addEventListener('click',function(e){
+      e.preventDefault();
+      if(rm){d.open=!d.open;return}
+      var from=d.offsetHeight;                       // live height, even mid animation
+      if(d._a){d._a.cancel();d._a=null}
+      var border=d.offsetHeight-d.clientHeight, shut=sm.offsetHeight+border;
+      var closing=d.open&&!d.classList.contains('closing'), to;
+      d.style.overflow='hidden';
+      if(closing){d.classList.add('closing');to=shut}
+      else{d.classList.remove('closing');d.open=true;to=d.offsetHeight}
+      var a=d._a=d.animate([{height:from+'px'},{height:to+'px'}],{duration:closing?460:560,easing:EASE,fill:'forwards'});
+      ans.animate(closing?[{opacity:1},{opacity:0}]:[{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],
+                  {duration:closing?220:460,delay:closing?0:90,easing:EASE,fill:'both'});
+      a.onfinish=function(){
+        if(closing){d.open=false;d.classList.remove('closing')}
+        d.style.overflow='';a.cancel();d._a=null;
+        ans.getAnimations().forEach(function(x){x.cancel()});
+      };
     });
   });
-  sync();
+
+  /* statement, revealed word by word */
+  var t=document.getElementById('tag');
+  t.innerHTML=['Nothing to sign up for.','Nothing to hand over.'].map(function(l){
+    return '<span style="display:block">'+l.split(' ').map(function(w){return '<span class="w">'+w+'</span>'}).join(' ')+'</span>';
+  }).join('');
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{rootMargin:'0px 0px -30% 0px'});
+  t.querySelectorAll('.w').forEach(function(w){io.observe(w)});
+  var rv=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target)}})},{rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv').forEach(function(n){rv.observe(n)});
 })();
-</script></body></html>
+</script>
+</body>
+</html>
