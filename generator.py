@@ -187,6 +187,10 @@ DOC_PAGES = {
 APP_STORE_ID = "6792149434"
 PAPER = "#f7f5f0"   # warm stone; the same value the home template uses
 
+FACT_FIXES = {
+    "(24 supported)": "(25 supported)",   # CurrencyCode now has 25 cases (Armenian dram added)
+}
+
 def extract_doc(raw: str):
     """Pull (title, updated, body_html) out of a vendor doc page."""
     title = re.search(r'<h1[^>]*>(.*?)</h1>', raw, re.S).group(1).strip()
@@ -194,6 +198,9 @@ def extract_doc(raw: str):
     updated = re.sub(r"\s+", " ", meta.split("Last updated")[1]).strip()
     body = re.search(r'<div class="alf-prose">(.*?)</div>', raw, re.S).group(1)
     body = re.sub(r"<!--.*?-->", "", body)
+    # facts that changed in the app after the vendor copy was written (checked against the app source)
+    for old, new in FACT_FIXES.items():
+        body = body.replace(old, new)
     # the vendor body repeats the page title as its first heading
     body = re.sub(r"^\s*<h2>" + re.escape(title) + r"</h2>", "", body)
     # internal and mailto links should not open new tabs; external ones keep it
