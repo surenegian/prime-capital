@@ -260,14 +260,14 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
   }
 
   /* showcase */
-  var SHORT=["Add","Accounts","Currency","Statistics","Reports","Settings"];
+  var SHORT=["Add","Accounts","Currency","Statistics","Reports","Lock"];
   var F=[
    ["shot-add-expense","Add an entry in a few taps","Expense or income, an account, a category. Or scan a receipt and let it fill in the amount, date and category.","New expense screen with a Scan button"],
    ["shot-accounts","Every account, its own character","Pick an icon and a color for each, then see income, expenses and entry count at a glance.","Accounts screen"],
    ["feature-currency","25 currencies, one tap for the rate","Add an account in any of them and fetch that day's exchange rate. Never type one in by hand.","Account with a currency and live rate"],
    ["shot-statistics","See where it actually went","Spent, income and net against last month, your biggest category in plain words, and a bar that breaks it down.","Statistics screen"],
    ["feature-reports","Reports out, statements in","A designed PDF, OFX, QFX or CSV imports, and a local backup you can restore whenever you need it.","Data and reports screen"],
-   ["shot-settings","Make it yours, in one list","Currency, categories, appearance, security and lock screen shortcuts in one short list, with search when you need it.","Settings screen"]
+   ["feature-lockscreen","Locked until you open it","Face ID or a PIN keeps the app closed. Pick up to four lock screen shortcuts; each one still asks for Face ID first.","Lock screen"]
   ];
   var tabs=document.getElementById('tabs'),view=document.getElementById('view'),cap=document.getElementById('cap'),cur=0;
   tabs.innerHTML=F.map(function(f,i){
