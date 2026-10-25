@@ -117,6 +117,9 @@ details p{padding:0 0 20px;color:var(--muted);font-size:15px;max-width:460px}
 footer{border-top:1px solid var(--hair);padding:20px 0 28px;font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:center;padding:0 10px}
+footer .wrap>nav:first-of-type{margin-left:auto}
+footer .soc{margin-left:-8px}footer .soc a{padding:0 8px}
+footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:480px){footer{font-size:13px}footer .wrap{gap:0 4px}footer a{padding:0 6px}}
 
 .rv{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
@@ -177,7 +180,7 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
     <div class="cap" id="cap"></div>
     <div class="view"><div class="dots" id="dots" aria-label="Choose a screen"></div><div class="phone" id="view" aria-live="polite"></div></div>
   </div>
-  <p class="also rv"><b>Also:</b> transfers between accounts, recurring entries, ten color designs, nine languages, and a hide button for your net worth.</p>
+  <p class="also rv"><b>Also:</b> monthly budgets by category, separate profiles for personal and business, transfers between accounts, recurring entries, ten color designs, nine languages, a layout made for iPhone Duo, and a hide button for your net worth.</p>
 </section>
 
 <section class="wrap band">
@@ -196,10 +199,12 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
       <details><summary>Do I need an account?</summary><p>No. Download it and start. There is nothing to sign up for.</p></details>
       <details><summary>Where is my data?</summary><p>On your iPhone. If you turn sync on, it is backed up to your own private iCloud, which we never see.</p></details>
       <details><summary>What happens to a scanned receipt?</summary><p>It is read on your iPhone to fill in the amount, date and category. It is never stored.</p></details>
+      <details><summary>Can I set a budget?</summary><p>Yes. Give any category a monthly spending limit. If an entry takes you over it, the app tells you and lets you raise the limit for just this month or for good.</p></details>
     </div>
     <div class="col">
       <details><summary>Can I bring my bank's data in?</summary><p>Yes. Import an OFX, QFX or CSV export and match its columns in a few taps.</p></details>
-      <details><summary>Can I keep a backup myself?</summary><p>Yes. Save a local copy from Data and Reports and restore from it later.</p></details>
+      <details><summary>Can I keep a backup myself?</summary><p>Yes. Save a local copy from Data and Reports and restore from it later. It includes every profile.</p></details>
+      <details><summary>Can I keep personal and business apart?</summary><p>Yes. Add a profile for each, with its own accounts, categories, budgets and look. Switch from the top of the dashboard, and pick which one opens first.</p></details>
       <details><summary>Which languages?</summary><p>English, German, Spanish, French, Italian, Dutch, Portuguese, Russian and Armenian.</p></details>
     </div>
   </div>
@@ -212,7 +217,8 @@ footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:ce
 </main>
 
 <footer><div class="wrap"><span>© 2026 Prime Capital</span>
-  <nav><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="support/">Support</a></nav></div></footer>
+  <nav><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="support/">Support</a></nav>
+  <nav class="soc" aria-label="Follow along"><a href="https://www.linkedin.com/company/prime-capital-finance" target="_blank" rel="noopener" aria-label="Prime Capital on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.5v.01M12 17v-6.5M12 13.5a3 3 0 0 1 6 0V17"/></svg></a><a href="https://www.instagram.com/primecapitalapp" target="_blank" rel="noopener" aria-label="Prime Capital on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg></a></nav></div></footer>
 
 <script>
 (function(){

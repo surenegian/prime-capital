@@ -268,6 +268,7 @@ def home_seo() -> str:
         "downloadUrl": f"https://apps.apple.com/app/id{APP_STORE_ID}",
         "description": desc,
         "inLanguage": ["en", "de", "es", "fr", "it", "nl", "pt", "ru", "hy"],
+        "sameAs": ["https://www.linkedin.com/company/prime-capital-finance", "https://www.instagram.com/primecapitalapp"],
     }, ensure_ascii=False)
     return "\n".join([
         f"<title>{title}</title>",
