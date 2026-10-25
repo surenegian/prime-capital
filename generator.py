@@ -129,20 +129,35 @@ def _duo_cover(im):
     body = body.crop((round(66 * sx), 0, round(66 * sx) + half.width, body.height))  # drop the spine
     half.alpha_composite(body, (0, round(40 - 20 * sy)))
     # square hinge-side corners, like the open phone's at its hinge, so neither shows around the other
-    # mid-swing: clear the cut-off spine ends past the top and bottom, then fill the frame's rounded
-    # corner out to square with its own rim (24px, sampled colour) and bezel black
-    w, top, bot, rim = 107, 40, 2195, 24
+    # mid-swing. Clear the cut-off spine ends past the top and bottom, then rebuild every non-screen pixel
+    # of each corner by extending the frame's own straight top/bottom and left edges (rim, highlight,
+    # bezel), meeting on the diagonal: one square corner, no leftover rounded rim inside it.
+    w, top, bot = 107, 40, 2195
     keep = Image.new("L", half.size, 255)
     d = ImageDraw.Draw(keep)
     d.rectangle((0, 0, w, top - 1), 0); d.rectangle((0, bot + 1, w, half.height), 0)
     half.putalpha(ImageChops.multiply(half.getchannel("A"), keep))
-    px = half.load()
-    for y in list(range(top, top + w)) + list(range(bot - w + 1, bot + 1)):
-        edge = min(y - top, bot - y)
-        for x in range(w):
-            if px[x, y][3] < 255:
-                fill = (58, 58, 61, 255) if x < rim or edge < rim else (5, 5, 6, 255)
-                px[x, y] = Image.alpha_composite(Image.new("RGBA", (1, 1), fill), Image.new("RGBA", (1, 1), px[x, y])).getpixel((0, 0))
+    # the app screen in these coordinates (outer screen x 126, y 78..2112, left corners r 47.5)
+    sl, st, sb, sr = (126 - 66) * sx, 40 + (78 - 20) * sy, 40 + (2112 - 20) * sy, 47.5
+    def on_screen(x, y):
+        if x < sl or not st <= y <= sb:
+            return False
+        cy = st + sr if y < st + sr else sb - sr if y > sb - sr else None
+        return cy is None or x >= sl + sr or (x - sl - sr) ** 2 + (y - cy) ** 2 <= sr * sr
+    src = half.copy().load(); px = half.load()
+    for edge, rows, inner in ((top, range(top, top + w), top + w + 2), (bot, range(bot - w + 1, bot + 1), bot - w - 2)):
+        for y in rows:
+            off = abs(y - edge)            # distance from the top/bottom edge
+            beyond = y < st or y > sb       # above/below the screen
+            for x in range(w):
+                if on_screen(x, y):
+                    continue
+                if x < sl and beyond:       # the outer corner: mitre the two edges on the diagonal
+                    px[x, y] = src[w + 2, y] if off < x else src[x, inner]
+                elif beyond:                # above/below the screen: continue the top/bottom edge
+                    px[x, y] = src[w + 2, y]
+                else:                       # beside the screen, or its rounded-off corner: continue downward/upward
+                    px[x, y] = src[x, inner]
     return half
 
 def _build_duo():
