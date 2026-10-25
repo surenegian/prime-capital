@@ -170,7 +170,7 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
    off the base: the two frame drawings differ at the corners and buttons, so near flat the base would peek out */
 .duo-dev.open .r{visibility:visible;transition-delay:.12s}
 .duo-dev .cover{transform-origin:left center;transform-style:preserve-3d;transition:transform var(--t);will-change:transform}
-.duo-dev.open .cover{transform:rotateY(-180deg)}
+.duo-dev.open .cover{transform:rotateY(180deg)}   /* +180: swings toward the viewer, so it hides the base on the way */
 .duo-dev .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .duo-dev .back{transform:rotateY(180deg)}
 .duo-dev img{display:block;pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}

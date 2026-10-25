@@ -119,18 +119,18 @@ DUO_SCALE = 1640 / 3082   # open frame width -> output width; closed uses the sa
 
 def _duo_cover(im):
     """Fit the closed phone onto the right half of the open one, edge to edge, so it can be the
-    cover that swings open: outer body x 66..1596, y 20..2170 -> inner right half x 0..1521, y 32..2194
+    cover that swings open: outer body x 66..1584, y 20..2170 -> open body's right half x 0..1499, y 40..2195
     (measured from the two frames). x 19..65 is the hinge spine drawn beside the phone; it is cut off,
     since it reads as a separate object once the cover lifts. x 66 starts the same 24px rim as the right edge."""
     from PIL import Image, ImageChops, ImageDraw
-    sx, sy = 1521 / (1596 - 66), (2194 - 32) / (2170 - 20)
+    sx, sy = 1499 / (1584 - 66), (2195 - 40) / (2170 - 20)
     body = im.resize((round(im.width * sx), round(im.height * sy)), Image.LANCZOS)
     half = Image.new("RGBA", (3082 // 2, 2236))
     body = body.crop((round(66 * sx), 0, round(66 * sx) + half.width, body.height))  # drop the spine
-    half.alpha_composite(body, (0, round(32 - 20 * sy)))
+    half.alpha_composite(body, (0, round(40 - 20 * sy)))
     # round the hinge-side corners like the others (screen radius 47 + 60 of bezel and rim), which also
     # clears the cut-off ends of the spine poking past the top and bottom
-    r, top, bot = 107, 32, 2194
+    r, top, bot = 107, 40, 2195
     keep = Image.new("L", half.size, 255)
     d = ImageDraw.Draw(keep)
     d.rectangle((0, 0, r, top + r), 0); d.ellipse((0, top, 2 * r, top + 2 * r), 255)
@@ -139,7 +139,7 @@ def _duo_cover(im):
     return half
 
 def _build_duo():
-    from PIL import Image, ImageDraw
+    from PIL import Image, ImageChops, ImageDraw
     base = pathlib.Path(__file__).parent / "appearances"
     for state, frame, shot, xy, radius, corners in DUO:
         # ponytail: an appearance without its own Duo captures borrows espresso's; capture them to fix
@@ -157,6 +157,11 @@ def _build_duo():
         im.alpha_composite(f)
         if state == "closed":
             im = _duo_cover(im)
+        else:   # bare body only (x 40..3040, y 40..2195, corner 200): its buttons sit elsewhere than the
+                # cover's, so they'd show doubled while the cover swings over it
+            keep = Image.new("L", im.size)
+            ImageDraw.Draw(keep).rounded_rectangle((40, 40, 3040, 2195), 200, fill=255)
+            im.putalpha(ImageChops.multiply(im.getchannel("A"), keep))
         im.resize((round(im.width * DUO_SCALE), round(im.height * DUO_SCALE)), Image.LANCZOS).save(
             dst, "WEBP", lossless=True, quality=100, method=6)
 
