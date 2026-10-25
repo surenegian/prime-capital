@@ -110,6 +110,33 @@ def _build_variants():
         im.resize((SHOT_W, round(im.height * SHOT_W / im.width)), Image.LANCZOS).save(
             dst, "WEBP", lossless=True, quality=100, method=6)
 
+# iPhone Duo: the app screens composited into the real device frames (appearances/frames/,
+# screen offsets from the frames' frames.json), then scaled to 1640px for the open device.
+# (state, frame, screenshot, screen offset, screen corner radius, which corners are round: tl tr br bl)
+DUO = [("closed", "duo-outer.webp", "outer.webp", (126, 78), 245, (False, True, True, False)),
+       ("open", "duo-inner.webp", "inner.webp", (114, 114), 126, (True, True, True, True))]
+DUO_SCALE = 1640 / 3082   # open frame width -> output width; closed uses the same scale
+
+def _build_duo():
+    from PIL import Image, ImageDraw
+    base = pathlib.Path(__file__).parent / "appearances"
+    for state, frame, shot, xy, radius, corners in DUO:
+        # ponytail: an appearance without its own Duo captures borrows espresso's; capture them to fix
+        shot_src = next(p for p in (base / APPEARANCE / "duo" / shot, base / "espresso" / "duo" / shot) if p.exists())
+        srcs = [base / "frames" / frame, shot_src]
+        dst = IMG_DIR / f"duo-{state}.webp"
+        if dst.exists() and dst.stat().st_mtime >= max(s.stat().st_mtime for s in srcs):
+            continue
+        f = Image.open(srcs[0]).convert("RGBA")
+        im = Image.new("RGBA", f.size)
+        screen = Image.open(srcs[1]).convert("RGBA")
+        mask = Image.new("L", screen.size)   # the outer screen's big corners reach past the device outline
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, *screen.size), radius, fill=255, corners=corners)
+        im.paste(screen, xy, mask)
+        im.alpha_composite(f)
+        im.resize((round(f.width * DUO_SCALE), round(f.height * DUO_SCALE)), Image.LANCZOS).save(
+            dst, "WEBP", lossless=True, quality=100, method=6)
+
 def apply_appearance():
     src = pathlib.Path(__file__).parent / "appearances" / APPEARANCE
     assert src.is_dir(), f"no screenshots for appearance {APPEARANCE!r} in {src}"
@@ -299,6 +326,7 @@ def home_seo() -> str:
 
 apply_appearance()
 _build_variants()
+_build_duo()
 
 home = (pathlib.Path(__file__).parent / "templates" / "home.html").read_text()
 assert home.count("<!--SEO-->") == 1
