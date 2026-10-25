@@ -187,8 +187,9 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
 .duo-dev{--dw:720px;--zs:1.15;--t:.9s cubic-bezier(.65,0,.35,1);position:relative;width:var(--dw);height:calc(var(--dw)*.7255);margin:calc(var(--dw)*.7255*(var(--zs) - 1)/2) 0;perspective:calc(var(--dw)*3);transform:scale(var(--zs)) translateX(-25%);transition:transform var(--t);will-change:transform;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .duo-dev.open{transform:none}
 .duo-dev .half{position:absolute;top:0;left:50%;width:50%;height:100%}
-.duo-dev .r{visibility:hidden;transition:visibility 0s .9s}   /* on/off in one frame: a fading copy reads as a ghost */
-.duo-dev.open .r{visibility:visible;transition-delay:0s}
+.duo-dev .r{visibility:hidden;transition:visibility 0s .78s}   /* on/off in one frame, and only once the cover is a few degrees
+   off the base: the two frame drawings differ at the corners and buttons, so near flat the base would peek out */
+.duo-dev.open .r{visibility:visible;transition-delay:.12s}
 .duo-dev .cover{transform-origin:left center;transform-style:preserve-3d;transition:transform var(--t);will-change:transform}
 .duo-dev.open .cover{transform:rotateY(-180deg)}
 .duo-dev .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
