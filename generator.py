@@ -122,12 +122,20 @@ def _duo_cover(im):
     cover that swings open: outer body x 66..1596, y 20..2170 -> inner right half x 0..1521, y 32..2194
     (measured from the two frames). x 19..65 is the hinge spine drawn beside the phone; it is cut off,
     since it reads as a separate object once the cover lifts. x 66 starts the same 24px rim as the right edge."""
-    from PIL import Image
+    from PIL import Image, ImageChops, ImageDraw
     sx, sy = 1521 / (1596 - 66), (2194 - 32) / (2170 - 20)
     body = im.resize((round(im.width * sx), round(im.height * sy)), Image.LANCZOS)
     half = Image.new("RGBA", (3082 // 2, 2236))
     body = body.crop((round(66 * sx), 0, round(66 * sx) + half.width, body.height))  # drop the spine
     half.alpha_composite(body, (0, round(32 - 20 * sy)))
+    # round the hinge-side corners like the others (screen radius 47 + 60 of bezel and rim), which also
+    # clears the cut-off ends of the spine poking past the top and bottom
+    r, top, bot = 107, 32, 2194
+    keep = Image.new("L", half.size, 255)
+    d = ImageDraw.Draw(keep)
+    d.rectangle((0, 0, r, top + r), 0); d.ellipse((0, top, 2 * r, top + 2 * r), 255)
+    d.rectangle((0, bot - r, r, half.height), 0); d.ellipse((0, bot - 2 * r, 2 * r, bot), 255)
+    half.putalpha(ImageChops.multiply(half.getchannel("A"), keep))
     return half
 
 def _build_duo():
