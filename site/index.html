@@ -68,8 +68,8 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-w
 
 /* hero */
 .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;padding:48px 24px 40px;max-width:1160px;margin:0 auto}
-.stage{position:relative;background:var(--stone);border:1px solid var(--hair);border-radius:36px;height:560px;overflow:hidden;display:flex;justify-content:center;align-items:flex-end}
-.stage .phone{--w:270px;margin-bottom:-70px;transform-style:preserve-3d;will-change:transform}
+.stage{position:relative;background:var(--stone);border:1px solid var(--hair);border-radius:36px;height:440px;margin-top:230px;overflow:visible;display:flex;justify-content:center;align-items:flex-end}
+.stage .phone{--w:270px;margin-bottom:40px;transform-style:preserve-3d;will-change:transform}
 .note{position:absolute;left:20px;bottom:20px;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:16px;background:rgba(247,245,240,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);font-size:13px;font-weight:600;line-height:1.3;box-shadow:0 10px 24px -14px rgba(19,19,19,.35)}
 .note i{width:30px;height:30px;border-radius:9px;background:var(--ink);display:grid;place-items:center;flex:none}
 .note svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -87,11 +87,11 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-w
 .tab .bar{background:var(--accent);transform:scaleY(0);transform-origin:top;will-change:transform}
 .tab .th{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--ink);opacity:.62;transition:opacity .6s cubic-bezier(.4,0,.2,1),color .6s cubic-bezier(.4,0,.2,1)}
 .tab .th .s{display:none}
-.tab .tp{display:block;max-height:0;overflow:hidden;opacity:0;font-size:15px;line-height:1.5;color:var(--muted);max-width:380px;transition:max-height .8s cubic-bezier(.4,0,.2,1),opacity .7s cubic-bezier(.4,0,.2,1) .1s,margin .6s cubic-bezier(.4,0,.2,1)}
+.tab .tp{display:block;height:0;overflow:hidden;opacity:0;font-size:15px;line-height:1.5;color:var(--muted);max-width:380px;transition:height .8s cubic-bezier(.4,0,.2,1),opacity .7s cubic-bezier(.4,0,.2,1) .1s,margin .6s cubic-bezier(.4,0,.2,1)}
 .tab[aria-selected="true"] .th{opacity:1}
 .tab[aria-selected="true"]:before{transform:scaleY(1)}
 .card.noauto .tab[aria-selected="true"] .bar{transform:scaleY(1)}
-.tab[aria-selected="true"] .tp{max-height:120px;opacity:1;margin-top:6px}
+.tab[aria-selected="true"] .tp{height:calc(15px*1.5*3);opacity:1;margin-top:6px}
 @media (hover:hover){.tab:hover .th{opacity:1}}
 .view{position:relative;background:var(--stone2);display:flex;justify-content:center;align-items:flex-end;overflow:hidden;border-left:1px solid var(--hair)}
 .view .phone{--w:250px;margin-top:40px;margin-bottom:-90px;cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
@@ -109,7 +109,7 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.04;letter-spacing:-.035em;font-w
 .band p.big{font-size:clamp(30px,4.6vw,56px);line-height:1.04;letter-spacing:-.04em;font-weight:600;max-width:680px}
 .band .w{color:rgba(19,19,19,.22);transition:color .7s var(--ease)}
 .band .w.on{color:var(--ink)}
-.facts{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--hair)}
+.facts{margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--hair)}
 .fact{padding:24px 24px 0 0}
 .fact+.fact{padding-left:24px;border-left:1px solid var(--hair)}
 .fact b{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em}
@@ -132,15 +132,17 @@ details p{padding:0 0 20px;color:var(--muted);font-size:15px;max-width:460px}
 
 /* close */
 .end{margin-top:72px;border-top:1px solid var(--hair);padding:56px 0}
-.end .wrap{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
-.end h2{font-size:clamp(28px,3.4vw,40px)}
+.end .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.end h2{font-size:clamp(28px,3.4vw,40px);max-width:none;text-wrap:balance}
 .end .cta{margin-top:0}
 footer{border-top:1px solid var(--hair);padding:20px 0 28px;font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 footer a{text-decoration:none;display:inline-flex;min-height:44px;align-items:center;padding:0 10px}
-footer .wrap>nav:first-of-type{margin-left:auto}
-footer .soc{margin-left:-8px}footer .soc a{padding:0 8px}
-footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.follow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:14px}
+.follow span{color:var(--muted);margin-right:4px}
+.follow a{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px 0 12px;border:1px solid var(--hair);border-radius:999px;color:var(--ink);font-weight:600;text-decoration:none;background:var(--bg);transition:border-color .3s,background-color .3s}
+@media (hover:hover){.follow a:hover{border-color:rgba(19,19,19,.35)}}
+.follow svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:480px){footer{font-size:13px}footer .wrap{gap:0 4px}footer a{padding:0 6px}}
 
 .rv{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
@@ -149,8 +151,8 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
 @media (prefers-reduced-transparency:reduce){header,.note{background:var(--bg);backdrop-filter:none}}
 @media (max-width:900px){
   .hero{grid-template-columns:1fr;padding-top:32px}
-  .stage{height:480px;border-radius:28px}
-  .stage .phone{--w:230px}
+  .stage{height:400px;margin-top:170px;border-radius:28px}
+  .stage .phone{--w:240px;margin-bottom:32px}
   .card{grid-template-columns:1fr;border-radius:28px;min-height:0}
   .tabs{flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:16px;gap:8px;scrollbar-width:none}
   .tabs::-webkit-scrollbar{display:none}
@@ -163,7 +165,7 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
   .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink)}
   .tab[aria-selected="true"] .th{color:#fff}
   .view{border-left:0;border-top:1px solid var(--hair);height:470px;flex-direction:column;align-items:center;justify-content:flex-start}
-  .dots{position:static;margin-top:8px}
+  .dots{display:none}
   .view .phone{--w:220px;margin-top:4px;margin-bottom:0}
   .cap{display:block;min-height:calc(15px*1.55*4 + 24px)}
   .facts{grid-template-columns:1fr}
@@ -230,7 +232,7 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
     <div class="cap" id="cap"></div>
     <div class="view"><div class="dots" id="dots" aria-label="Choose a screen"></div><div class="phone" id="view" aria-live="polite"></div></div>
   </div>
-  <p class="also rv"><b>Also:</b> transfers between accounts, recurring entries, ten color designs, nine languages, a layout made for iPhone Duo, and a hide button for your net worth.</p>
+  <p class="also rv"><b>Also:</b> Home Screen widgets for one-tap adding, transfers between accounts, recurring entries, ten color designs, nine languages, a layout made for iPhone Duo, and a hide button for your net worth.</p>
 </section>
 
 <section class="wrap duo" aria-labelledby="duo-h">
@@ -247,7 +249,6 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
 <section class="wrap band">
   <p class="big" id="tag"></p>
   <div class="facts rv">
-    <div class="fact"><b>No account</b><span>Nothing to sign up for, and no password to lose.</span></div>
     <div class="fact"><b>No server</b><span>Your data lives on your iPhone, and in your own iCloud if you choose.</span></div>
     <div class="fact"><b>No ads</b><span>No analytics and no third party SDKs of any kind.</span></div>
   </div>
@@ -272,14 +273,17 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
 </section>
 
 <section class="end"><div class="wrap">
-  <h2 class="rv">No account. No catch.</h2>
+  <h2 class="rv">Nine languages. 25&nbsp;currencies. One iPhone.</h2>
   <div class="cta rv"><a href="https://apps.apple.com/app/id6792149434"><img src="assets/img/app-store-badge.svg" alt="Download on the App Store"></a></div>
+  <nav class="follow rv" aria-label="Follow along"><span>Follow along</span>
+    <a href="https://www.instagram.com/primecapitalapp" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg>Instagram</a>
+    <a href="https://www.linkedin.com/company/prime-capital-finance" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.5v.01M12 17v-6.5M12 13.5a3 3 0 0 1 6 0V17"/></svg>LinkedIn</a>
+  </nav>
 </div></section>
 </main>
 
 <footer><div class="wrap"><span>© 2026 Prime Capital</span>
-  <nav><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="support/">Support</a></nav>
-  <nav class="soc" aria-label="Follow along"><a href="https://www.linkedin.com/company/prime-capital-finance" target="_blank" rel="noopener noreferrer" aria-label="Prime Capital on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.5v.01M12 17v-6.5M12 13.5a3 3 0 0 1 6 0V17"/></svg></a><a href="https://www.instagram.com/primecapitalapp" target="_blank" rel="noopener noreferrer" aria-label="Prime Capital on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg></a></nav></div></footer>
+  <nav><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="support/">Support</a></nav></div></footer>
 
 <script>
 (function(){
