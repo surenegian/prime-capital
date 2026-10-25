@@ -128,14 +128,21 @@ def _duo_cover(im):
     half = Image.new("RGBA", (3082 // 2, 2236))
     body = body.crop((round(66 * sx), 0, round(66 * sx) + half.width, body.height))  # drop the spine
     half.alpha_composite(body, (0, round(40 - 20 * sy)))
-    # round the hinge-side corners like the others (screen radius 47 + 60 of bezel and rim), which also
-    # clears the cut-off ends of the spine poking past the top and bottom
-    r, top, bot = 107, 40, 2195
+    # square hinge-side corners, like the open phone's at its hinge, so neither shows around the other
+    # mid-swing: clear the cut-off spine ends past the top and bottom, then fill the frame's rounded
+    # corner out to square with its own rim (24px, sampled colour) and bezel black
+    w, top, bot, rim = 107, 40, 2195, 24
     keep = Image.new("L", half.size, 255)
     d = ImageDraw.Draw(keep)
-    d.rectangle((0, 0, r, top + r), 0); d.ellipse((0, top, 2 * r, top + 2 * r), 255)
-    d.rectangle((0, bot - r, r, half.height), 0); d.ellipse((0, bot - 2 * r, 2 * r, bot), 255)
+    d.rectangle((0, 0, w, top - 1), 0); d.rectangle((0, bot + 1, w, half.height), 0)
     half.putalpha(ImageChops.multiply(half.getchannel("A"), keep))
+    px = half.load()
+    for y in list(range(top, top + w)) + list(range(bot - w + 1, bot + 1)):
+        edge = min(y - top, bot - y)
+        for x in range(w):
+            if px[x, y][3] < 255:
+                fill = (58, 58, 61, 255) if x < rim or edge < rim else (5, 5, 6, 255)
+                px[x, y] = Image.alpha_composite(Image.new("RGBA", (1, 1), fill), Image.new("RGBA", (1, 1), px[x, y])).getpixel((0, 0))
     return half
 
 def _build_duo():
