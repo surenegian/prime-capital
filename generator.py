@@ -119,13 +119,14 @@ DUO_SCALE = 1640 / 3082   # open frame width -> output width; closed uses the sa
 
 def _duo_cover(im):
     """Fit the closed phone onto the right half of the open one, edge to edge, so it can be the
-    cover that swings open: outer body x 19..1596, y 20..2170 -> inner right half x 0..1521, y 32..2194
-    (measured from the two frames' alpha). Nothing of the inner screen can show around or through it."""
+    cover that swings open: outer body x 66..1596, y 20..2170 -> inner right half x 0..1521, y 32..2194
+    (measured from the two frames). x 19..65 is the hinge spine drawn beside the phone; it is cut off,
+    since it reads as a separate object once the cover lifts. x 66 starts the same 24px rim as the right edge."""
     from PIL import Image
-    sx, sy = 1521 / (1596 - 19), (2194 - 32) / (2170 - 20)
+    sx, sy = 1521 / (1596 - 66), (2194 - 32) / (2170 - 20)
     body = im.resize((round(im.width * sx), round(im.height * sy)), Image.LANCZOS)
     half = Image.new("RGBA", (3082 // 2, 2236))
-    body = body.crop((round(21 * sx), 0, round(21 * sx) + half.width, body.height))  # drop the hinge margin and its soft edge
+    body = body.crop((round(66 * sx), 0, round(66 * sx) + half.width, body.height))  # drop the spine
     half.alpha_composite(body, (0, round(32 - 20 * sy)))
     return half
 
