@@ -139,7 +139,7 @@ def _duo_cover(im):
     return half
 
 def _build_duo():
-    from PIL import Image, ImageChops, ImageDraw
+    from PIL import Image, ImageDraw
     base = pathlib.Path(__file__).parent / "appearances"
     for state, frame, shot, xy, radius, corners in DUO:
         # ponytail: an appearance without its own Duo captures borrows espresso's; capture them to fix
@@ -157,11 +157,6 @@ def _build_duo():
         im.alpha_composite(f)
         if state == "closed":
             im = _duo_cover(im)
-        else:   # bare body only (x 40..3040, y 40..2195), with the cover's rounder corners (320, not the
-                # frame's 200): otherwise its buttons and squarer corners poke out past the cover as it swings
-            keep = Image.new("L", im.size)
-            ImageDraw.Draw(keep).rounded_rectangle((40, 40, 3040, 2195), 320, fill=255)
-            im.putalpha(ImageChops.multiply(im.getchannel("A"), keep))
         im.resize((round(im.width * DUO_SCALE), round(im.height * DUO_SCALE)), Image.LANCZOS).save(
             dst, "WEBP", lossless=True, quality=100, method=6)
 
