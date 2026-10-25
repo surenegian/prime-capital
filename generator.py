@@ -157,10 +157,10 @@ def _build_duo():
         im.alpha_composite(f)
         if state == "closed":
             im = _duo_cover(im)
-        else:   # bare body only (x 40..3040, y 40..2195, corner 200): its buttons sit elsewhere than the
-                # cover's, so they'd show doubled while the cover swings over it
+        else:   # bare body only (x 40..3040, y 40..2195), with the cover's rounder corners (320, not the
+                # frame's 200): otherwise its buttons and squarer corners poke out past the cover as it swings
             keep = Image.new("L", im.size)
-            ImageDraw.Draw(keep).rounded_rectangle((40, 40, 3040, 2195), 200, fill=255)
+            ImageDraw.Draw(keep).rounded_rectangle((40, 40, 3040, 2195), 320, fill=255)
             im.putalpha(ImageChops.multiply(im.getchannel("A"), keep))
         im.resize((round(im.width * DUO_SCALE), round(im.height * DUO_SCALE)), Image.LANCZOS).save(
             dst, "WEBP", lossless=True, quality=100, method=6)
