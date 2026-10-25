@@ -86,6 +86,8 @@ PHONE_SHOTS = [
     ("feature-lockscreen.webp", "Face ID / PIN lock screen"),
     ("feature-reports.webp", "Generated PDF financial report"),
     ("feature-import.webp", "Importing a bank statement"),
+    ("feature-budgets.webp", "Budgets: monthly spending limits per category"),
+    ("feature-profiles.webp", "Profiles: Personal and Business"),
     ("shot-statistics.webp", "Statistics: spending by category and balance growth"),
 ]
 
