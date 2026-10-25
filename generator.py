@@ -117,6 +117,18 @@ DUO = [("closed", "duo-outer.webp", "outer.webp", (126, 78), 245, (False, True, 
        ("open", "duo-inner.webp", "inner.webp", (114, 114), 126, (True, True, True, True))]
 DUO_SCALE = 1640 / 3082   # open frame width -> output width; closed uses the same scale
 
+def _duo_cover(im):
+    """Fit the closed phone onto the right half of the open one, edge to edge, so it can be the
+    cover that swings open: outer body x 19..1596, y 20..2170 -> inner right half x 0..1521, y 32..2194
+    (measured from the two frames' alpha). Nothing of the inner screen can show around or through it."""
+    from PIL import Image
+    sx, sy = 1521 / (1596 - 19), (2194 - 32) / (2170 - 20)
+    body = im.resize((round(im.width * sx), round(im.height * sy)), Image.LANCZOS)
+    half = Image.new("RGBA", (3082 // 2, 2236))
+    body = body.crop((round(21 * sx), 0, round(21 * sx) + half.width, body.height))  # drop the hinge margin and its soft edge
+    half.alpha_composite(body, (0, round(32 - 20 * sy)))
+    return half
+
 def _build_duo():
     from PIL import Image, ImageDraw
     base = pathlib.Path(__file__).parent / "appearances"
@@ -134,7 +146,9 @@ def _build_duo():
         ImageDraw.Draw(mask).rounded_rectangle((0, 0, *screen.size), radius, fill=255, corners=corners)
         im.paste(screen, xy, mask)
         im.alpha_composite(f)
-        im.resize((round(f.width * DUO_SCALE), round(f.height * DUO_SCALE)), Image.LANCZOS).save(
+        if state == "closed":
+            im = _duo_cover(im)
+        im.resize((round(im.width * DUO_SCALE), round(im.height * DUO_SCALE)), Image.LANCZOS).save(
             dst, "WEBP", lossless=True, quality=100, method=6)
 
 def apply_appearance():

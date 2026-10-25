@@ -187,14 +187,15 @@ footer .soc svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-widt
 .duo-dev{--dw:720px;--zs:1.15;--t:.9s cubic-bezier(.65,0,.35,1);position:relative;width:var(--dw);height:calc(var(--dw)*.7255);margin:calc(var(--dw)*.7255*(var(--zs) - 1)/2) 0;perspective:calc(var(--dw)*3);transform:scale(var(--zs)) translateX(-25%);transition:transform var(--t);will-change:transform;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .duo-dev.open{transform:none}
 .duo-dev .half{position:absolute;top:0;left:50%;width:50%;height:100%}
-.duo-dev .r{opacity:0;transition:opacity .2s linear .65s}   /* gone just before the cover lands */
-.duo-dev.open .r{opacity:1;transition-delay:0s}
+.duo-dev .r{visibility:hidden;transition:visibility 0s .9s}   /* on/off in one frame: a fading copy reads as a ghost */
+.duo-dev.open .r{visibility:visible;transition-delay:0s}
 .duo-dev .cover{transform-origin:left center;transform-style:preserve-3d;transition:transform var(--t);will-change:transform}
 .duo-dev.open .cover{transform:rotateY(-180deg)}
 .duo-dev .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .duo-dev .back{transform:rotateY(180deg)}
 .duo-dev img{display:block;pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .duo-dev img{width:100%;height:100%;object-fit:contain;object-position:left center}
+.duo-dev .front img{object-fit:fill}   /* outer frame is ~4% off the open half; match it exactly so nothing peeks */
 .duo-dev .r img,.duo-dev .back img{object-fit:cover}   /* each half of the open screen, no clipping box needed */
 .duo-dev .r img{object-position:right center}
 @media (max-width:820px){.duo-card{padding:16px 16px 40px;border-radius:28px;gap:32px}.duo-dev{--dw:calc(100vw - 82px);--zs:1.3}}
