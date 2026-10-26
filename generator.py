@@ -280,6 +280,10 @@ PAPER = "#f7f5f0"   # warm stone; the same value the home template uses
 
 FACT_FIXES = {
     "(24 supported)": "(25 supported)",   # CurrencyCode now has 25 cases (Armenian dram added)
+    # GeneralSettingsView: a main-currency change asks to confirm, then for fresh rates for accounts in other currencies
+    "Existing entries are unaffected; only how amounts are displayed changes.":
+        "Your entries stay exactly as they are. If any account uses another currency, the app asks you to confirm "
+        "and then to enter fresh exchange rates, so your net worth stays correct.",
 }
 
 def extract_doc(raw: str):
